@@ -7,7 +7,15 @@ Instance build `glide-brazil-08-25-2026__patch1-hotfix1-10-10-2026_10-12-2026_07
 
 0 failure(s) owned by the agent, 0 environment finding(s) (server prerequisites, instance content or MID). Totals: 64 pass, 0 fail, 4 warn, 17 skip, 0 error.
 
-Qualified package: `agent-client-collector-7.1.3-ubuntu-1804_amd64.deb` - embedded Ruby 3.3.13 (2026-10-23), OpenSSL 3.5.9 (29 Sep 2026), Go 1.26.10.
+Packages installed in this run: `agent-client-collector-7.1.3-windows-x64.msi` (windows-x86_64, sha256 `113b3355d0a67dab…`).
+
+Embedded runtimes read from the Linux package `agent-client-collector-7.1.3-ubuntu-1804_amd64.deb` before installing: Ruby 3.3.13 (2026-10-23), OpenSSL 3.5.9 (29 Sep 2026), Go 1.26.10. The Windows MSI is not unpacked; every host's values are read from the installed agent and listed below.
+
+### Installed agent per host
+
+| Host | Agent | Go | Ruby | OpenSSL | osquery (from the instance) |
+|---|---|---|---|---|---|
+| acc-win2025 | acc version 7.1.3, build dd94c9bd05a867348c700f5a8e65f4eb1112e8c0, built 2026-11-03T23:12:20Z | go1.26.10 | ruby 3.3.13 (2026-10-23 revision af48f08f21) [x64-mingw32ucrt] | OpenSSL 3.5.9 29 Sep 2026 | osqueryi.exe version 5.18.1 |
 
 ## Targets
 

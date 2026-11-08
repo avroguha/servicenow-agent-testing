@@ -430,8 +430,15 @@ class Report(unittest.TestCase):
              "agent_rss_peak_mb": 42, "agent_procs_max": 1, "agent_threads_max": 9, "agent_fds_max": 19, "agent_read_mb": 0, "agent_write_mb": 0,
              "host_busy_avg": 15.5, "host_busy_peak": 27.6, "load1_max": 4.57, "host_mem_delta_mb": 1}],
             "impact": {"load": {"samples": 0, "duration_s": 0}, "idle": {}, "host_busy_delta": None}, "overall": {"samples": 0, "duration_s": 0}}]
+        run.packages = [{"os_key": "linux-x86_64-deb", "file": "agent-client-collector-7.1.3-ubuntu-1804_amd64.deb", "downloaded": True, "sha256": "ab" * 32},
+                        {"os_key": "windows-x86_64", "file": "agent-client-collector-7.1.3-windows-x64.msi", "downloaded": True, "sha256": "cd" * 32}]
+        run.components += [{"component": "Agent Client Collector", "version": "acc version 7.1.3", "kind": "agent", "source": "", "target": "t1"},
+                           {"component": "Ruby (embedded)", "version": "ruby 3.3.13", "kind": "interpreter", "source": "", "target": "t1"}]
         md = render_markdown(run)
         self.assertIn("# T - agent 7.1.3", md)
+        self.assertIn("Packages installed in this run: `agent-client-collector-7.1.3-ubuntu-1804_amd64.deb`", md)
+        self.assertNotIn("windows-x64.msi", md)          # only the packages of this run's targets
+        self.assertIn("| t1 | acc version 7.1.3 |  | ruby 3.3.13 |", md)
         self.assertIn("Agent verdict: SAFE", md)
         self.assertIn("| ok \\| fine |", md)            # pipes in a message cannot break the table
         self.assertIn("| gem rexml | `3.4.4` | Ruby gem | gems | package, t1 |", md)   # one row per distinct component

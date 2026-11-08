@@ -62,8 +62,8 @@ def render(run: RunResult) -> str:
     rows = [("Agent version", run.version), ("ACC Framework app", run.app_version), ("Instance build", run.build),
             ("MID endpoint", run.backend_url), ("Targets", ", ".join(t.get("name", "") for t in run.targets) or "none")]
     if rt.get("ruby"):
-        rows.insert(1, ("Embedded Ruby", f"{rt['ruby']} ({rt.get('ruby_date', '')})"))
-        rows.insert(2, ("Embedded OpenSSL", f"{rt.get('openssl', '?')} ({rt.get('openssl_date', '')})"))
+        rows.insert(1, ("Embedded Ruby (read from the Linux package)", f"{rt['ruby']} ({rt.get('ruby_date', '')})"))
+        rows.insert(2, ("Embedded OpenSSL (read from the Linux package)", f"{rt.get('openssl', '?')} ({rt.get('openssl_date', '')})"))
     for k, v in rows:
         parts.append(f"<div><span>{_e(k)}</span><span>{_e(v)}</span></div>")
     parts.append("</div><div class='kv' style='min-width:200px'>")
@@ -258,10 +258,35 @@ def render_markdown(run: RunResult) -> str:
     out.append(f"{len(run.agent_failures())} failure(s) owned by the agent, {len(run.env_failures())} environment finding(s) "
                f"(server prerequisites, instance content or MID). Totals: {c[PASS]} pass, {c[FAIL]} fail, {c[WARN]} warn, {c[SKIP]} skip, {c[ERROR]} error.")
     out.append("")
+    # the packages the targets of THIS run were installed from (one per OS key), with their checksums
+    used_keys = {t.get("os") for t in run.targets}
+    used = [p for p in run.packages if p.get("os_key") in used_keys and p.get("downloaded") and not str(p.get("file", "")).endswith(".zip")]
+    if used:
+        out.append("Packages installed in this run: " + "; ".join(f"`{p.get('file')}` ({p.get('os_key')}, sha256 `{str(p.get('sha256') or '')[:16]}…`)" for p in used) + ".")
+        out.append("")
     if run.runtimes:
         rt = run.runtimes
-        out.append(f"Qualified package: `{Path(str(rt.get('package', ''))).name}` - embedded Ruby {rt.get('ruby', '?')} ({rt.get('ruby_date', '?')}), "
-                   f"OpenSSL {rt.get('openssl', '?')} ({rt.get('openssl_date', '?')}), Go {rt.get('go_version', '?')}.")
+        out.append(f"Embedded runtimes read from the Linux package `{Path(str(rt.get('package', ''))).name}` before installing: Ruby {rt.get('ruby', '?')} "
+                   f"({rt.get('ruby_date', '?')}), OpenSSL {rt.get('openssl', '?')} ({rt.get('openssl_date', '?')}), Go {rt.get('go_version', '?')}. "
+                   "The Windows MSI is not unpacked; every host's values are read from the installed agent and listed below.")
+        out.append("")
+    # what is actually installed on each host - the figures that matter for an audit of that host
+    per_host: dict[str, dict] = {}
+    for comp in run.components:
+        tgt = comp.get("target") or ""
+        if not tgt:
+            continue
+        slot = {"agent": "agent", "compiler/runtime": "go", "interpreter": "ruby", "crypto library": "openssl", "tool (from the instance)": "osquery"}.get(comp.get("kind", ""))
+        if slot:
+            per_host.setdefault(tgt, {})[slot] = comp.get("version", "")
+    if per_host:
+        out.append("### Installed agent per host")
+        out.append("")
+        out.append("| Host | Agent | Go | Ruby | OpenSSL | osquery (from the instance) |")
+        out.append("|---|---|---|---|---|---|")
+        for tgt in sorted(per_host):
+            h = per_host[tgt]
+            out.append(f"| {_md(tgt)} | {_md(h.get('agent', ''), 120)} | {_md(h.get('go', ''))} | {_md(h.get('ruby', ''), 80)} | {_md(h.get('openssl', ''))} | {_md(h.get('osquery', ''))} |")
         out.append("")
     # targets
     if run.targets:
