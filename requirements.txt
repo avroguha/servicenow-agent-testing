@@ -1,0 +1,5 @@
+# Pinned, every version published more than 72 hours before it was added here (supply-chain gate).
+requests==2.32.3        # 2024-05-29
+PyYAML==6.0.2           # 2024-08-06
+playwright==1.64.1      # 2026-10-22  (UI-only steps; `python -m playwright install chromium` once)
+pywinrm==0.5.0          # 2024-07-16  (Windows targets over WinRM; optional at home)

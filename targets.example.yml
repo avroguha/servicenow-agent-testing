@@ -1,0 +1,60 @@
+# Target servers for the ACC agent qualification. Copy to targets.yml (git-ignored) and edit.
+#
+# One entry per server. `python acctest.py versions` prints the os keys the instance has packages for:
+#   linux-x86_64-deb   Ubuntu / Debian (the agent ships one deb for all of them)
+#   linux-x86_64-rpm   RHEL, Rocky, Alma, Oracle Linux, Amazon Linux, SLES
+#   linux-aarch64-deb  Ubuntu 22.04+ on ARM64
+#   windows-x86_64     Windows Server (MSI)
+#
+# Fields
+#   name        label used in the report (must be unique)
+#   os          package key from the list above
+#   family      linux | windows (defaults from os)
+#   transport   ssh   - Linux over SSH, key auth, root or passwordless sudo
+#               winrm - Windows over WinRM (port 5985 http / 5986 https), local administrator
+#               pct   - Proxmox container reached through the node (home lab, written by `lab provision`)
+#   host        IP or DNS name reachable from the machine running acctest
+#   user        login (defaults: TARGET_SSH_USER from .env)
+#   ssh_key     private key path (defaults: TARGET_SSH_KEY from .env)
+#   password    WinRM only. Prefer putting it here over the command line; this file is git-ignored.
+#   port        ssh/winrm port when not the default
+#   labels      free-form notes that appear in the report (team, data centre, ...); winrm_ssl: true for https WinRM
+#   skip        true -> keep the entry but leave it out of runs
+targets:
+  - name: rhel9-app01
+    os: linux-x86_64-rpm
+    transport: ssh
+    host: 10.20.30.41
+    user: svc_acctest
+    ssh_key: ~/.ssh/acctest_ed25519
+    labels: {dc: east, team: platform}
+
+  - name: ubuntu2204-web01
+    os: linux-x86_64-deb
+    transport: ssh
+    host: web01.test.example.internal
+
+  - name: win2022-app01
+    os: windows-x86_64
+    family: windows
+    transport: winrm
+    host: 10.20.30.51
+    user: Administrator
+    password: change-me
+    port: 5985
+    labels: {winrm_ssl: false}
+
+  # Windows over OpenSSH (Windows Server 2019+ ships it): PowerShell is the shell, key auth for an administrator.
+  - name: win2025-app02
+    os: windows-x86_64
+    family: windows
+    transport: ssh
+    host: 10.20.30.52
+    user: Administrator
+    ssh_key: ~/.ssh/id_ed25519
+
+  - name: sles15-db01
+    os: linux-x86_64-rpm
+    transport: ssh
+    host: 10.20.30.61
+    skip: true

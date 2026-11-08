@@ -1,0 +1,49 @@
+# Local configuration - holds credentials and server names. NEVER commit.
+/.env
+/.env.*
+!/.env.example
+/targets.yml
+/targets.*.yml
+!/targets.example.yml
+
+# Downloaded agent packages and test output (large / environment specific)
+/dist/*
+!/dist/.gitkeep
+/results/*
+!/results/.gitkeep
+/lab/state.json
+/.state/
+
+# Python
+__pycache__/
+*.pyc
+/.venv/
+/venv/
+*.egg-info/
+
+# Browser session state and screenshots that may show server names
+/.browser/
+/screenshots/
+# --- never published: dependencies, caches, secrets, keys, local databases
+node_modules/
+.pytest_cache/
+.mypy_cache/
+.next/
+.turbo/
+coverage/
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.kdbx
+id_rsa*
+id_ed25519*
+*.sqlite
+*.sqlite3
+*.db
+!.env.*.example

@@ -1,0 +1,5 @@
+[
+  {"exec": "acctest_users.sh", "args": [""], "skip_arguments": true},
+  {"exec": "acctest_users.cmd", "args": [""], "skip_arguments": true},
+  {"exec": "acctest_users.ps1", "args": [""], "skip_arguments": true}
+]

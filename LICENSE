@@ -1,0 +1,15 @@
+acctest - use and information only
+
+Copyright (c) 2026 the author.
+
+This repository is published for information and personal, non-commercial use. You may read it, run it against your
+own ServiceNow instance and adapt it for your own internal use. It is not released under an open-source licence: do not
+redistribute it, in whole or in part, or present it as your own.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR ITS USE.
+
+ServiceNow, the Agent Client Collector agent, the MID Server and the ServiceNow content this tool exercises are
+proprietary products of ServiceNow, Inc. and are not part of this repository, not covered by this notice, and not to be
+modified: contact ServiceNow for any change to them. See NOTICE.md.
