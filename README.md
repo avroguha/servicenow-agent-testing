@@ -158,7 +158,9 @@ tree's own average share of the host's capacity while working. The test row *Age
 while working* is PASS or WARN only (the budget is yours): WARN when the agent's average CPU while working exceeds
 `PERF_CPU_AVG_WARN_PCT` (25% of one core), its RSS peak exceeds `PERF_RSS_PEAK_WARN_MB` (400 MB), or the host CPU busy
 increase exceeds `PERF_HOST_IMPACT_WARN_PCT` (10 points). Raw per-interval samples are written to `perf-<target>.csv`
-next to the report. Windows targets keep the 60-second idle CPU sample only for now.
+next to the report. Windows targets keep the 60-second idle CPU sample only for now. On an LXC container the host CPU busy and load figures are the physical
+node's (shared with every other guest), so read the agent's own CPU and *share of host* there; on a VM or bare metal they
+describe that server. A worked example with numbers is in [reports/7.1.3/README.md](reports/7.1.3/README.md#performance-what-the-agent-cost-the-host-ubuntu-2404-2-vcpu-1-gb).
 
 ### Which version fixes a Ruby / OpenSSL CVE?
 
