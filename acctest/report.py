@@ -230,6 +230,152 @@ def render(run: RunResult) -> str:
     return "".join(parts)
 
 
+# ---- Markdown: the same report as text, for a repository or a ticket -------------------------------------------------
+def _md(s, limit: int = 0) -> str:
+    """One Markdown table cell: no pipes, no line breaks, optionally truncated."""
+    s = str(s if s is not None else "").replace("|", "\\|").replace("\r", " ").replace("\n", " ")
+    s = " ".join(s.split())
+    if limit and len(s) > limit:
+        s = s[:limit - 1].rstrip() + "…"
+    return s
+
+
+def render_markdown(run: RunResult) -> str:
+    """result.md: verdict, targets, environment findings, performance per target, components (one row per distinct
+    component/version, with the hosts it was seen on) and every test's status and message. Evidence stays in the HTML."""
+    c = run.counts()
+    av = run.agent_verdict()
+    out: list[str] = []
+    out.append(f"# {run.title or 'ACC agent qualification'} - agent {run.version}")
+    out.append("")
+    out.append(f"Instance `{run.instance}` · MID Server `{run.mid_server}` · {run.started} → {run.finished or '…'}")
+    if run.build or run.app_version:
+        out.append(f"Instance build `{run.build}` · Agent Client Collector Framework {run.app_version}")
+    out.append("")
+    verdict = {PASS: "SAFE", FAIL: "NOT SAFE", SKIP: "NOT TESTED"}.get(av, av)
+    out.append(f"## Agent verdict: {verdict}")
+    out.append("")
+    out.append(f"{len(run.agent_failures())} failure(s) owned by the agent, {len(run.env_failures())} environment finding(s) "
+               f"(server prerequisites, instance content or MID). Totals: {c[PASS]} pass, {c[FAIL]} fail, {c[WARN]} warn, {c[SKIP]} skip, {c[ERROR]} error.")
+    out.append("")
+    if run.runtimes:
+        rt = run.runtimes
+        out.append(f"Qualified package: `{Path(str(rt.get('package', ''))).name}` - embedded Ruby {rt.get('ruby', '?')} ({rt.get('ruby_date', '?')}), "
+                   f"OpenSSL {rt.get('openssl', '?')} ({rt.get('openssl_date', '?')}), Go {rt.get('go_version', '?')}.")
+        out.append("")
+    # targets
+    if run.targets:
+        secs = [s for s in SECTIONS if any(r.section == s and r.target for r in run.results)]
+        out.append("## Targets")
+        out.append("")
+        out.append("| Target | OS | Package | Transport | " + " | ".join(secs) + " | Result |")
+        out.append("|---|---|---|---|" + "---|" * len(secs) + "---|")
+        for t in run.targets:
+            name = t.get("name", "")
+            rows = [r for r in run.results if r.target == name]
+            cells = []
+            for s in secs:
+                sec = [r for r in rows if r.section == s]
+                if not sec:
+                    cells.append("–")
+                    continue
+                worst = min(sec, key=lambda r: ORDER[r.status]).status
+                cells.append(f"{LABEL[worst]} {sum(1 for r in sec if r.status == PASS)}/{len(sec)}")
+            worst_all = min(rows, key=lambda r: ORDER[r.status]).status if rows else SKIP
+            out.append(f"| {_md(name)} | {_md(t.get('distro') or t.get('os'))} | {_md(t.get('os'))} | {_md(t.get('transport'))} {_md(t.get('host') or t.get('vmid', ''))} | "
+                       + " | ".join(cells) + f" | {LABEL[worst_all]} |")
+        out.append("")
+    # failures
+    agent_f = run.agent_failures()
+    if agent_f:
+        out.append("## Failures owned by the agent")
+        out.append("")
+        out.append("| Target | Test | What |")
+        out.append("|---|---|---|")
+        for r in agent_f:
+            out.append(f"| {_md(r.target)} | {_md(r.name)} | {_md(r.message, 600)} |")
+        out.append("")
+    env_f = run.env_failures()
+    if env_f:
+        out.append("## Environment findings (not the agent's fault)")
+        out.append("")
+        out.append("| Cause | Target | Test | What |")
+        out.append("|---|---|---|---|")
+        for r in sorted(env_f, key=lambda r: (r.cause, r.target, r.name)):
+            out.append(f"| {_md(CAUSE_LABEL.get(r.cause, r.cause))} | {_md(r.target)} | {_md(r.name)} | {_md(r.message, 600)} |")
+        out.append("")
+    # performance
+    if run.perf:
+        out.append("## Performance: agent resource usage and host impact")
+        out.append("")
+        out.append("Agent = the whole agent process tree (acc plus the checks and osquery it spawns); CPU in % of one core, share = the same CPU "
+                   "as a fraction of all cores on the host. fds are open descriptors (handles on Windows); load1 is the 1-minute load average "
+                   "(processor queue length on Windows).")
+        out.append("")
+        for p in run.perf:
+            out.append(f"### {p.get('target')} - {p.get('distro') or ''} · {p.get('ncpu')} cores · {p.get('samples')} samples every {p.get('step_s', '?')}s")
+            out.append("")
+            out.append("| Phase | Seconds | Agent CPU avg / peak | Share of host | Agent RSS avg / peak MB | Procs / threads / fds | Disk read / written MB | Host CPU busy avg / peak | Load1 max | Host memory used Δ MB |")
+            out.append("|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|")
+            rows = list(p.get("phases", [])) + [dict(p.get("impact", {}).get("load", {}), phase="all working phases"), dict(p.get("overall", {}), phase="whole window")]
+            for ph in rows:
+                if not ph.get("samples"):
+                    out.append(f"| {ph.get('phase')} | {ph.get('duration_s', 0)} | no samples | | | | | | | |")
+                    continue
+                out.append(f"| {ph.get('phase')} | {ph['duration_s']} | {ph['agent_cpu_avg']:g}% / {ph['agent_cpu_peak']:g}% | {ph['agent_share_avg']:g}% | "
+                           f"{ph['agent_rss_avg_mb']} / {ph['agent_rss_peak_mb']} | {ph['agent_procs_max']} / {ph['agent_threads_max']} / {ph['agent_fds_max']} | "
+                           f"{ph['agent_read_mb']:g} / {ph['agent_write_mb']:g} | {ph['host_busy_avg']:g}% / {ph['host_busy_peak']:g}% | {ph['load1_max']:g} | {ph['host_mem_delta_mb']:+d} |")
+            imp = p.get("impact", {})
+            if imp.get("host_busy_delta") is not None:
+                out.append("")
+                out.append(f"Host impact: CPU busy {imp['host_busy_delta']:+g} points working vs idle; the agent tree itself averaged "
+                           f"{imp.get('agent_share_load_avg'):g}% of the host's CPU capacity while working.")
+            out.append("")
+    # components
+    if run.components:
+        out.append("## Components, modules and packages inside the agent (for the security audit)")
+        out.append("")
+        out.append("Rows marked *package* were read from the downloaded package before installing; the hosts named were read after installation. "
+                   "Plugin content and osquery come from the instance, not from the agent package.")
+        out.append("")
+        key_order = {"agent": 0, "agent package": 0, "compiler/runtime": 1, "interpreter": 2, "crypto library": 3, "tool (from the instance)": 4,
+                     "shared library": 5, "plugin content (from the instance)": 6, "Ruby gem": 7}
+        groups: dict[tuple, list[str]] = {}
+        for comp in run.components:
+            k = (comp.get("kind", ""), comp.get("component", ""), comp.get("version", ""), comp.get("source", ""))
+            groups.setdefault(k, []).append(comp.get("target") or "package")
+        out.append("| Component | Version | Kind | Source | Seen on |")
+        out.append("|---|---|---|---|---|")
+        for k in sorted(groups, key=lambda k: (key_order.get(k[0], 9), k[1].lower(), k[2])):
+            seen = sorted(set(groups[k]), key=lambda t: (t != "package", t))
+            out.append(f"| {_md(k[1])} | `{_md(k[2]) or ' '}` | {_md(k[0])} | {_md(k[3])} | {_md(', '.join(seen))} |")
+        out.append("")
+    # all tests
+    out.append("## All tests")
+    out.append("")
+    for s in SECTIONS:
+        rows = [r for r in run.results if r.section == s]
+        if not rows:
+            continue
+        out.append(f"### {s} ({len(rows)})")
+        out.append("")
+        out.append("| Status | Test | Target | Result |")
+        out.append("|---|---|---|---|")
+        for r in sorted(rows, key=lambda r: (ORDER[r.status], r.target, r.name)):
+            cause = f" *(cause: {CAUSE_LABEL.get(r.cause, r.cause)})*" if r.cause else ""
+            out.append(f"| {LABEL[r.status]}{cause} | {_md(r.name)} | {_md(r.target)} | {_md(r.message, 700)} |")
+        out.append("")
+    if run.notes:
+        out.append("## Notes")
+        out.append("")
+        out.extend(f"* {_md(n)}" for n in run.notes)
+        out.append("")
+    out.append("Generated by acctest. Secrets are redacted; host names and addresses are those of the environment the run was made in. "
+               "The HTML report beside this file carries the evidence (command output, record values, log lines) for every row.")
+    out.append("")
+    return "\n".join(out)
+
+
 def write_report(run: RunResult, out_dir: Path, basename: str = "result") -> Path:
     """result.html for a full run; a subset run (--targets) is written as result-partial-<timestamp>.html so it never
     replaces the full picture of the version."""
@@ -237,6 +383,7 @@ def write_report(run: RunResult, out_dir: Path, basename: str = "result") -> Pat
     run.save(out_dir / f"{basename}.json")
     p = out_dir / f"{basename}.html"
     p.write_text(render(run), encoding="utf-8")
+    (out_dir / f"{basename}.md").write_text(render_markdown(run), encoding="utf-8")
     if run.components:
         import csv
         with (out_dir / ("components.csv" if basename == "result" else f"{basename}-components.csv")).open("w", newline="", encoding="utf-8") as f:

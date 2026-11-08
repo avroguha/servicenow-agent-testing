@@ -377,6 +377,12 @@ class Perf(unittest.TestCase):
         self.assertNotIn("__", s.replace("__DIR__", "").replace("__SCRIPT__", "").replace("__STEP__", "") if False else s.replace("ACCTEST_SAMPLER_EOF", ""))
         self.assertIn("/tmp/acctest-perf/sampler.sh 5 ", s)
         self.assertIn("---CSV---", perf.stop_script())
+        w = perf.start_script(7, "windows")
+        self.assertIn("sampler.ps1`\" 7 ", w)
+        self.assertNotIn("__STEP__", w)
+        self.assertIn("Win32_PerfRawData_PerfOS_Processor", w)
+        self.assertIn("'@", w)              # the here-string closes
+        self.assertIn("---CSV---", perf.stop_script("windows"))
 
     def test_analyze_handles_garbage_and_exited_children(self):
         from acctest import perf
@@ -410,6 +416,28 @@ class Report(unittest.TestCase):
         self.assertEqual(run.overall(), FAIL)
         self.assertEqual(run.counts()[PASS], 1)
         self.assertIn("prefers-color-scheme", html)
+
+    def test_markdown_report(self):
+        from acctest.report import render_markdown
+        run = RunResult(version="7.1.3", instance="https://x", mid_server="m", backend_url="b", title="T")
+        run.targets = [{"name": "t1", "os": "linux-x86_64-deb", "transport": "ssh", "host": "h", "distro": "Ubuntu 24.04"}]
+        run.add(TestResult(id="a", name="Install", section="Install", status=PASS, target="t1", message="ok | fine"))
+        run.add(TestResult(id="b", name="Plugins", section="Resources", status=FAIL, target="t1", message="crlf", cause="content"))
+        run.components = [{"component": "gem rexml", "version": "3.4.4", "kind": "Ruby gem", "source": "gems", "target": "t1"},
+                          {"component": "gem rexml", "version": "3.4.4", "kind": "Ruby gem", "source": "gems", "target": ""}]
+        run.perf = [{"target": "t1", "distro": "Ubuntu 24.04", "ncpu": 2, "samples": 3, "step_s": 5, "phases": [
+            {"phase": "idle", "samples": 2, "duration_s": 10, "agent_cpu_avg": 0.1, "agent_cpu_peak": 0.4, "agent_share_avg": 0.05, "agent_rss_avg_mb": 42,
+             "agent_rss_peak_mb": 42, "agent_procs_max": 1, "agent_threads_max": 9, "agent_fds_max": 19, "agent_read_mb": 0, "agent_write_mb": 0,
+             "host_busy_avg": 15.5, "host_busy_peak": 27.6, "load1_max": 4.57, "host_mem_delta_mb": 1}],
+            "impact": {"load": {"samples": 0, "duration_s": 0}, "idle": {}, "host_busy_delta": None}, "overall": {"samples": 0, "duration_s": 0}}]
+        md = render_markdown(run)
+        self.assertIn("# T - agent 7.1.3", md)
+        self.assertIn("Agent verdict: SAFE", md)
+        self.assertIn("| ok \\| fine |", md)            # pipes in a message cannot break the table
+        self.assertIn("| gem rexml | `3.4.4` | Ruby gem | gems | package, t1 |", md)   # one row per distinct component
+        self.assertIn("| idle | 10 | 0.1% / 0.4% |", md)
+        self.assertIn("Environment findings", md)
+        self.assertIn("Instance content", md)
 
     def test_json_roundtrip(self):
         run = RunResult(version="1", instance="i", mid_server="m", backend_url="b")

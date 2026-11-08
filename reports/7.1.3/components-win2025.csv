@@ -1,0 +1,219 @@
+component,version,kind,source,target
+Agent Client Collector,7.1.3,agent package,agent-client-collector-7.1.3-ubuntu-1804_amd64.deb,package
+Go runtime (acc binary),1.26.10,compiler/runtime,bin/acc,package
+Ruby (embedded),3.3.13 (2026-10-23),interpreter,embedded/bin/ruby,package
+OpenSSL (embedded),3.5.9 (29 Sep 2026),crypto library,embedded/lib/libcrypto,package
+libcrypt,1.1.0,shared library,embedded/lib,package
+libffi,8.1.2,shared library,embedded/lib,package
+libruby,3.3.13,shared library,embedded/lib,package
+libyaml-0,2.0.9,shared library,embedded/lib,package
+libz,1.2.13,shared library,embedded/lib,package
+gem abbrev,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem addressable,2.9.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem base64,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem benchmark,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem bigdecimal,3.1.5,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem bundler,2.5.22,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem cgi,0.5.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem csv,3.2.8,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem date,3.3.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem debug,1.9.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem delegate,0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem did_you_mean,1.6.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem digest,3.1.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem drb,2.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem english,0.8.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem erb,4.0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem error_highlight,0.6.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem etc,1.4.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem fcntl,1.1.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem ffi-compiler,1.4.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem fiddle,1.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem fileutils,1.7.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem find,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem forwardable,1.3.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem getoptlong,0.2.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem io-nonblock,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem io-wait,0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem ipaddr,1.2.6,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem irb,1.13.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem json,2.7.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem llhttp-ffi,0.5.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem logger,1.6.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem matrix,0.4.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem minitest,5.20.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem mixlib-cli,1.7.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem mutex_m,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-ftp,0.3.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-http,0.4.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-imap,0.5.15,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-pop,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-protocol,0.2.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-smtp,0.5.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem nkf,0.1.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem observer,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem open-uri,0.4.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem open3,0.2.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem openssl,3.2.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem optparse,0.4.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem ostruct,0.6.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem pathname,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem power_assert,2.0.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem pp,0.5.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem prettyprint,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem prime,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem prism,0.19.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem pstore,0.2.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem psych,5.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem public_suffix,7.0.5,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem racc,1.7.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rake,13.1.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rb-readline,0.5.5,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rbs,3.5.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rdoc,6.6.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem readline,0.0.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem reline,0.5.10,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem resolv,0.3.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rexml,3.4.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rinda,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rss,0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem ruby2_keywords,0.0.5,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem securerandom,0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem sensu-plugin,4.0.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem set,1.1.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem shellwords,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem singleton,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem stringio,3.1.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem strscan,3.0.9,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem syntax_suggest,2.0.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem syslog,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem tempfile,0.2.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem test-unit,3.6.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem time,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem timeout,0.4.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem tmpdir,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem tsort,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem typeprof,0.21.9,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem un,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem uri,0.13.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem weakref,0.1.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem win32ole,1.8.10,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem yaml,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem zlib,3.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+Agent Client Collector,"acc version 7.1.3, build dd94c9bd05a867348c700f5a8e65f4eb1112e8c0, built 2026-11-03T23:12:20Z",agent,7.1.3.3,acc-win2025
+Go runtime (acc binary),go1.26.10,compiler/runtime,bin/acc,acc-win2025
+Ruby (embedded),ruby 3.3.13 (2026-10-23 revision af48f08f21) [x64-mingw32ucrt],interpreter,embedded/bin/ruby,acc-win2025
+OpenSSL (embedded),OpenSSL 3.5.9 29 Sep 2026,crypto library,embedded/lib,acc-win2025
+osquery (plugin asset),osqueryi.exe version 5.18.1,tool (from the instance),agent cache,acc-win2025
+libcrypto-3-x64.dll,3.5.9,shared library,embedded/lib,acc-win2025
+libssl-3-x64.dll,3.5.9,shared library,embedded/lib,acc-win2025
+libffi-8.dll,,shared library,embedded/lib,acc-win2025
+libgcc_s_seh-1.dll,,shared library,embedded/lib,acc-win2025
+libstdc++-6.dll,,shared library,embedded/lib,acc-win2025
+libwinpthread-1.dll,"1, 0, 0, 0",shared library,embedded/lib,acc-win2025
+libyaml-0-2.dll,,shared library,embedded/lib,acc-win2025
+x64-ucrt-ruby330.dll,3.3.13p207,shared library,embedded/lib,acc-win2025
+zlib1.dll,1.2.13,shared library,embedded/lib,acc-win2025
+gem abbrev,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem addressable,2.9.0,Ruby gem,embedded ruby,acc-win2025
+gem base64,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem benchmark,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem bigdecimal,3.1.5,Ruby gem,embedded ruby,acc-win2025
+gem bundler,2.5.22,Ruby gem,embedded ruby,acc-win2025
+gem cgi,0.5.0,Ruby gem,embedded ruby,acc-win2025
+gem csv,3.2.8,Ruby gem,embedded ruby,acc-win2025
+gem date,3.3.4,Ruby gem,embedded ruby,acc-win2025
+gem debug,1.9.2,Ruby gem,embedded ruby,acc-win2025
+gem delegate,0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem did_you_mean,1.6.3,Ruby gem,embedded ruby,acc-win2025
+gem digest,3.1.1,Ruby gem,embedded ruby,acc-win2025
+gem drb,2.2.0,Ruby gem,embedded ruby,acc-win2025
+gem english,0.8.0,Ruby gem,embedded ruby,acc-win2025
+gem erb,4.0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem error_highlight,0.6.0,Ruby gem,embedded ruby,acc-win2025
+gem etc,1.4.3,Ruby gem,embedded ruby,acc-win2025
+gem fcntl,1.1.0,Ruby gem,embedded ruby,acc-win2025
+gem ffi,1.17.0,Ruby gem,embedded ruby,acc-win2025
+gem ffi-compiler,1.4.3,Ruby gem,embedded ruby,acc-win2025
+gem ffi-win32-extensions,1.1.0,Ruby gem,embedded ruby,acc-win2025
+gem fiddle,1.1.2,Ruby gem,embedded ruby,acc-win2025
+gem fileutils,1.7.2,Ruby gem,embedded ruby,acc-win2025
+gem find,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem forwardable,1.3.3,Ruby gem,embedded ruby,acc-win2025
+gem getoptlong,0.2.1,Ruby gem,embedded ruby,acc-win2025
+gem io-nonblock,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem io-wait,0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem ipaddr,1.2.6,Ruby gem,embedded ruby,acc-win2025
+gem irb,1.13.1,Ruby gem,embedded ruby,acc-win2025
+gem json,"2.7.2, 2.7.1",Ruby gem,embedded ruby,acc-win2025
+gem llhttp-ffi,0.5.0,Ruby gem,embedded ruby,acc-win2025
+gem logger,1.6.0,Ruby gem,embedded ruby,acc-win2025
+gem matrix,0.4.2,Ruby gem,embedded ruby,acc-win2025
+gem minitest,5.20.0,Ruby gem,embedded ruby,acc-win2025
+gem mixlib-cli,1.7.0,Ruby gem,embedded ruby,acc-win2025
+gem mutex_m,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem net-ftp,0.3.4,Ruby gem,embedded ruby,acc-win2025
+gem net-http,0.4.1,Ruby gem,embedded ruby,acc-win2025
+gem net-imap,0.5.15,Ruby gem,embedded ruby,acc-win2025
+gem net-pop,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem net-protocol,0.2.2,Ruby gem,embedded ruby,acc-win2025
+gem net-smtp,0.5.1,Ruby gem,embedded ruby,acc-win2025
+gem nkf,0.1.3,Ruby gem,embedded ruby,acc-win2025
+gem observer,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem open-uri,0.4.1,Ruby gem,embedded ruby,acc-win2025
+gem open3,0.2.1,Ruby gem,embedded ruby,acc-win2025
+gem openssl,3.2.4,Ruby gem,embedded ruby,acc-win2025
+gem optparse,0.4.0,Ruby gem,embedded ruby,acc-win2025
+gem ostruct,0.6.0,Ruby gem,embedded ruby,acc-win2025
+gem pathname,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem power_assert,2.0.3,Ruby gem,embedded ruby,acc-win2025
+gem pp,0.5.0,Ruby gem,embedded ruby,acc-win2025
+gem prettyprint,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem prime,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem prism,0.19.0,Ruby gem,embedded ruby,acc-win2025
+gem pstore,0.2.1,Ruby gem,embedded ruby,acc-win2025
+gem psych,5.1.2,Ruby gem,embedded ruby,acc-win2025
+gem public_suffix,7.0.5,Ruby gem,embedded ruby,acc-win2025
+gem racc,1.7.3,Ruby gem,embedded ruby,acc-win2025
+gem rake,13.1.0,Ruby gem,embedded ruby,acc-win2025
+gem rb-readline,0.5.5,Ruby gem,embedded ruby,acc-win2025
+gem rbs,3.5.0,Ruby gem,embedded ruby,acc-win2025
+gem rdoc,6.6.3.1,Ruby gem,embedded ruby,acc-win2025
+gem readline,0.0.4,Ruby gem,embedded ruby,acc-win2025
+gem reline,0.5.10,Ruby gem,embedded ruby,acc-win2025
+gem resolv,0.3.2,Ruby gem,embedded ruby,acc-win2025
+gem rexml,3.4.4,Ruby gem,embedded ruby,acc-win2025
+gem rinda,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem rss,0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem ruby2_keywords,0.0.5,Ruby gem,embedded ruby,acc-win2025
+gem securerandom,0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem sensu-plugin,4.0.0,Ruby gem,embedded ruby,acc-win2025
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded ruby,acc-win2025
+gem set,1.1.0,Ruby gem,embedded ruby,acc-win2025
+gem shellwords,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem singleton,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem stringio,3.1.1,Ruby gem,embedded ruby,acc-win2025
+gem strscan,3.0.9,Ruby gem,embedded ruby,acc-win2025
+gem syntax_suggest,2.0.3,Ruby gem,embedded ruby,acc-win2025
+gem syslog,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem tempfile,0.2.1,Ruby gem,embedded ruby,acc-win2025
+gem test-unit,3.6.1,Ruby gem,embedded ruby,acc-win2025
+gem time,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem timeout,0.4.1,Ruby gem,embedded ruby,acc-win2025
+gem tmpdir,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem tsort,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem typeprof,0.21.9,Ruby gem,embedded ruby,acc-win2025
+gem un,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem uri,0.13.3,Ruby gem,embedded ruby,acc-win2025
+gem weakref,0.1.3,Ruby gem,embedded ruby,acc-win2025
+gem win32-security,0.5.0,Ruby gem,embedded ruby,acc-win2025
+gem win32ole,1.8.10,Ruby gem,embedded ruby,acc-win2025
+gem yaml,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem zlib,3.1.2,Ruby gem,embedded ruby,acc-win2025
+plugin asset acc-f-commons,77 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset acc-f-modules,6 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset acc-visibility-modules,41 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset acc-visibility-modules-common,45 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset acctest-scripts,4 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset osquery,1 files,plugin content (from the instance),agent cache,acc-win2025

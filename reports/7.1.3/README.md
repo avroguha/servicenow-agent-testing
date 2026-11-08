@@ -8,6 +8,9 @@ Files in this folder (sanitised copies of the lab results - UI screenshots and t
 | file | what |
 |---|---|
 | [result.html](result.html) | the full report: verdict, every test on every host, evidence, cause per failure, component inventory, settings |
+| [result.md](result.md) | the same full run as Markdown: verdict, targets, findings, every test's status and message, and every component / module / package with its version and the hosts it was seen on |
+| [windows-server-2025.md](windows-server-2025.md) | **Windows Server 2025 in full, as Markdown**: all 85 test rows, the performance table and the complete component list (agent, Go, Ruby, OpenSSL, DLLs, 96 gems, plugin content) with versions |
+| [result-win2025-performance.html](result-win2025-performance.html), [perf-acc-win2025.csv](perf-acc-win2025.csv), [components-win2025.csv](components-win2025.csv) | the Windows run's HTML report with evidence, its raw performance samples and its component inventory as CSV |
 | [components.csv](components.csv) | the component inventory for a security audit (926 rows: agent, Go runtime, embedded Ruby and OpenSSL, shared libraries, gems, plugin content) |
 | [result-ubuntu2404-performance.html](result-ubuntu2404-performance.html) | the Ubuntu 24.04 host re-run with the performance sampler: a **Performance** section with the agent's resource usage and host impact per phase |
 | [perf-acc-ubuntu2404.csv](perf-acc-ubuntu2404.csv) | the raw performance samples behind it (one row per 5 s interval) |
@@ -84,6 +87,44 @@ What it means:
 
 Thresholds for the WARN flag (none hit): agent average CPU while working above 25% of one core, agent RSS peak above
 400 MB, host CPU busy increase above 10 points.
+
+## Windows Server 2025: result and performance (4 vCPU, 6 GB)
+
+Run on 2026-11-08 with the performance sampler: **64 pass, 0 fail, 4 warn, 17 skip - agent verdict SAFE, no environment
+findings.** The four warnings are informational: one ERROR line in the agent log after start (the first connection
+attempt before the service had its certificate store), the shipped *Software Installed Policy* not yet having its
+client list calculated by the platform's periodic job, the two lab signing certificates left in `C:\Windows\Temp`
+by the test itself, and a UI screenshot on which the CI name could not be confirmed by text. The 17 skips are
+background checks (not testable ad hoc), agent-internal check types and policies whose table or filter does not
+select a Windows server. Everything else, including the signed custom PowerShell plugin (`acctest_users.ps1` through
+its `.cmd` wrapper: 10 local users, 2 administrators), passed. The full list with every message is in
+[windows-server-2025.md](windows-server-2025.md).
+
+Performance, sampled every 5 seconds (92 samples). *Agent* is the service `AgentClientCollector` and everything it
+spawned (PowerShell check scripts, osquery, Ruby discovery modules); handles stand in for file descriptors and the
+processor queue length for load.
+
+| phase | seconds | agent CPU avg / peak | share of host | agent RSS avg / peak MB | procs / threads / handles (max) | disk read / written MB | host CPU busy avg / peak |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| discovery (host data collection) | 66 | 8.4% / 31.7% | 2.09% | 161 / 264 | 6 / 65 / 1570 | 35.5 / 0.7 | 16.4% / 32.1% |
+| checks (every applicable check, ad hoc) | 296 | 6.4% / 47.8% | 1.59% | 102 / 264 | 6 / 65 / 1510 | 27.5 / 0.2 | 10.4% / 32.8% |
+| policies (policy-driven checks) | 64 | 4.3% / 43.6% | 1.06% | 78 / 164 | 6 / 49 / 1314 | 3.5 / 0.0 | 6.1% / 25.7% |
+| idle (connected, nothing to do) | 65 | 0.8% / 1.6% | 0.19% | 70 / 70 | 1 / 16 / 375 | 0.0 / 0.0 | 5.5% / 18.8% |
+| **all working phases** | **426** | **6.4% / 47.8%** | **1.59%** | **107 / 264** | **6 / 65 / 1570** | **66.6 / 0.9** | **10.7% / 32.8%** |
+
+What it means:
+
+* **Idle cost** on Windows is one process of 70 MB working set, 16 threads, 375 handles, under 1% of one core.
+* **Working cost is higher than on Linux, as expected from the Windows check content**: the checks run PowerShell and
+  osquery processes (up to 6 at once, 65 threads, 1,570 handles), the agent tree peaked at 48% of one core for a few
+  seconds and at 264 MB of working set, and read 67 MB from disk over seven minutes (osquery and the software inventory
+  reading installed-program metadata). It returned to 70 MB and under 1% once the work was done.
+* **Host impact**: host CPU busy averaged 10.7% while the agent worked against 5.5% while it idled, so about
+  +5 points on a 4 vCPU VM, of which the agent tree itself accounted for 1.6% of the host's capacity; the rest is the
+  work the checks cause elsewhere (WMI provider host, osquery's file reads). Host memory in use rose by up to 118 MB
+  during the checks and fell back afterwards. None of the three WARN thresholds (25% average CPU, 400 MB peak RSS,
+  10 points host CPU) was reached.
+* This VM is a KVM guest on the same node as the Linux containers; the host figures describe the VM itself.
 
 ## Environment findings (not the agent's fault)
 

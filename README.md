@@ -24,7 +24,9 @@ release is safe for production:
 | UI | headless Chromium logs in and screenshots the agent form, the host CI and the test results (UI-only verification) |
 
 The result is `results/<version>/result.html` (self-contained, offline, light/dark): what was tested, the status of
-each item, and for every failure exactly what failed with the evidence (command output, record values, log lines).
+each item, and for every failure exactly what failed with the evidence (command output, record values, log lines) -
+plus `result.md`, the same report as Markdown (verdict, targets, findings, performance, every component with its
+version, every test's status and message) for a repository, a wiki or a ticket.
 `results/index.html` lists all versions tested so far.
 
 Nothing in this repository is specific to one company or one lab. Everything environment-specific lives in two
@@ -35,7 +37,8 @@ git-ignored files: `.env` (instance, MID, credentials, lab) and `targets.yml` (t
 `results/` is git-ignored (it holds the lab's addresses and UI screenshots), so each qualification that is worth keeping is
 copied, sanitised, into `reports/<version>/` with a Markdown summary: **[reports/7.1.3/](reports/7.1.3/README.md)** -
 agent 7.1.3 on six Linux distributions and Windows Server 2025, verdict SAFE, with the component inventory for the
-security audit and the environment findings explained.
+security audit, performance metrics for Ubuntu 24.04 and Windows Server 2025, the full run and the Windows run as
+Markdown (`result.md`, `windows-server-2025.md`), and the environment findings explained.
 
 ## Requirements
 
@@ -158,9 +161,10 @@ tree's own average share of the host's capacity while working. The test row *Age
 while working* is PASS or WARN only (the budget is yours): WARN when the agent's average CPU while working exceeds
 `PERF_CPU_AVG_WARN_PCT` (25% of one core), its RSS peak exceeds `PERF_RSS_PEAK_WARN_MB` (400 MB), or the host CPU busy
 increase exceeds `PERF_HOST_IMPACT_WARN_PCT` (10 points). Raw per-interval samples are written to `perf-<target>.csv`
-next to the report. Windows targets keep the 60-second idle CPU sample only for now. On an LXC container the host CPU busy and load figures are the physical
+next to the report. Windows targets are sampled the same way by a PowerShell script started through WMI (so it outlives the SSH session);
+there handles stand in for fds and the processor queue length for the load average. On an LXC container the host CPU busy and load figures are the physical
 node's (shared with every other guest), so read the agent's own CPU and *share of host* there; on a VM or bare metal they
-describe that server. A worked example with numbers is in [reports/7.1.3/README.md](reports/7.1.3/README.md#performance-what-the-agent-cost-the-host-ubuntu-2404-2-vcpu-1-gb).
+describe that server. Worked examples with numbers (Ubuntu 24.04 and Windows Server 2025) are in [reports/7.1.3/README.md](reports/7.1.3/README.md).
 
 ### Which version fixes a Ruby / OpenSSL CVE?
 

@@ -14,6 +14,9 @@ checks, policies, inventory, idle); `analyze` turns the counters into per-phase 
 
 Everything is read from /proc; nothing is installed on the target and the sampler removes itself. /proc/<pid>/io needs
 root (or the agent's own user) - without it the disk columns stay 0 and the result says so.
+
+Windows targets get the same CSV from a PowerShell sampler (raw performance counters + Win32_Process of the service's
+process tree); there "fds" are handles and "load1" is the processor queue length.
 """
 from __future__ import annotations
 
@@ -87,12 +90,86 @@ rm -rf __DIR__
 COLUMNS = ("t", "host_total", "host_idle", "load1", "mem_total_kb", "mem_avail_kb", "agent_ticks", "agent_rss_kb",
            "agent_threads", "agent_fds", "agent_procs", "agent_read_bytes", "agent_write_bytes", "io_readable")
 
+# ---- Windows: the same CSV from PowerShell -----------------------------------------------------------------------------
+# Host CPU comes from the raw performance counters (Win32_PerfRawData_PerfOS_Processor _Total: PercentProcessorTime is the
+# cumulative IDLE time in 100 ns units, Timestamp_Sys100NS the clock), scaled to 1/100 s "ticks" so the analyzer's
+# delta arithmetic is identical to Linux. "load1" is the processor queue length (Windows has no load average) and "fds"
+# are handle counts. Process CPU is KernelModeTime + UserModeTime (100 ns units) of the service's process tree.
+WIN_PERF_DIR = r"C:\Windows\Temp\acctest-perf"
 
-def start_script(step: int) -> str:
+_WIN_SAMPLER_PS1 = r"""param([int]$Step, [string]$Out)
+# acctest performance sampler (Windows): one CSV row of raw counters every STEP seconds (see acctest/perf.py)
+$ErrorActionPreference = 'SilentlyContinue'
+$ncpu = [Environment]::ProcessorCount
+while ($true) {
+  $t = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+  $cpu = Get-CimInstance Win32_PerfRawData_PerfOS_Processor -Filter "Name='_Total'"
+  $total = [int64]($cpu.Timestamp_Sys100NS / 100000)   # _Total's PercentProcessorTime is per-processor idle, so no ncpu factor
+  $idle = [int64]($cpu.PercentProcessorTime / 100000)
+  $q = (Get-CimInstance Win32_PerfRawData_PerfOS_System).ProcessorQueueLength
+  $os = Get-CimInstance Win32_OperatingSystem
+  $memt = $os.TotalVisibleMemorySize; $mema = $os.FreePhysicalMemory
+  $main = (Get-CimInstance Win32_Service -Filter "Name='AgentClientCollector'").ProcessId
+  $procs = Get-CimInstance Win32_Process | Select-Object ProcessId, ParentProcessId, KernelModeTime, UserModeTime, WorkingSetSize, ThreadCount, HandleCount, ReadTransferCount, WriteTransferCount
+  $tree = @()
+  if ($main) {
+    $queue = @([int]$main)
+    while ($queue.Count -gt 0) {
+      $p = $queue[0]; $queue = @($queue | Select-Object -Skip 1); $tree += $p
+      $queue += @($procs | Where-Object { $_.ParentProcessId -eq $p } | ForEach-Object { [int]$_.ProcessId })
+    }
+  }
+  $at = [int64]0; $rss = [int64]0; $th = 0; $fd = 0; $np = 0; $rb = [int64]0; $wb = [int64]0
+  foreach ($p in ($procs | Where-Object { $tree -contains [int]$_.ProcessId })) {
+    $np++; $at += [int64](($p.KernelModeTime + $p.UserModeTime) / 100000); $rss += [int64]($p.WorkingSetSize / 1024)
+    $th += $p.ThreadCount; $fd += $p.HandleCount; $rb += [int64]$p.ReadTransferCount; $wb += [int64]$p.WriteTransferCount
+  }
+  Add-Content -Path $Out -Encoding ascii -Value "$t,$total,$idle,$q,$memt,$mema,$at,$rss,$th,$fd,$np,$rb,$wb,1"
+  Start-Sleep -Seconds $Step
+}
+"""
+
+_WIN_START = r"""$ErrorActionPreference = 'SilentlyContinue'
+$d = '__DIR__'
+Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -like '*acctest-perf\sampler.ps1*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
+Remove-Item -Recurse -Force $d; New-Item -ItemType Directory -Force $d | Out-Null
+Set-Content -Path "$d\sampler.ps1" -Encoding ascii -Value @'
+__SCRIPT__
+'@
+New-Item -ItemType File -Force "$d\samples.csv" | Out-Null
+# a child of the SSH session dies with the session - WMI's Win32_Process.Create spawns it outside, under WmiPrvSE
+$cmd = "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$d\sampler.ps1`" __STEP__ `"$d\samples.csv`""
+$r = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{ CommandLine = $cmd }
+$p = @{ Id = $r.ProcessId }
+"PID=$($p.Id)"
+"T0=$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())"
+"TCK=100"
+"NCPU=$([Environment]::ProcessorCount)"
+Start-Sleep -Seconds 2
+"ALIVE=$(@(Get-Process -Id $p.Id -ErrorAction SilentlyContinue).Count)"
+"""
+
+_WIN_STOP = r"""$ErrorActionPreference = 'SilentlyContinue'
+$d = '__DIR__'
+Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" | Where-Object { $_.CommandLine -like '*acctest-perf\sampler.ps1*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
+Start-Sleep -Seconds 1
+"T1=$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())"
+"LOG="
+"---CSV---"
+Get-Content "$d\samples.csv"
+Remove-Item -Recurse -Force $d
+"""
+
+
+def start_script(step: int, family: str = "linux") -> str:
+    if family == "windows":
+        return _WIN_START.replace("__SCRIPT__", _WIN_SAMPLER_PS1.rstrip("\n")).replace("__DIR__", WIN_PERF_DIR).replace("__STEP__", str(int(step)))
     return _START.replace("__SCRIPT__", _SAMPLER_SH.rstrip("\n")).replace("__DIR__", PERF_DIR).replace("__STEP__", str(int(step)))
 
 
-def stop_script() -> str:
+def stop_script(family: str = "linux") -> str:
+    if family == "windows":
+        return _WIN_STOP.replace("__DIR__", WIN_PERF_DIR)
     return _STOP.replace("__DIR__", PERF_DIR)
 
 
@@ -204,15 +281,16 @@ def describe(a: dict, cpu_limit: float | None = None) -> str:
 class PerfSession:
     """Start the sampler on one target, mark phases from the runner's clock, stop and analyze."""
 
-    def __init__(self, tr, step: int = 5):
+    def __init__(self, tr, step: int = 5, family: str = "linux"):
         self.tr = tr
+        self.family = family
         self.step = max(int(step), 2)
         self.offset = 0.0           # host epoch - local epoch
         self.marks: list[tuple[str, float]] = []
         self.meta: dict = {}
 
     def start(self) -> str:
-        r = self.tr.run(start_script(self.step), timeout=90)
+        r = self.tr.run(start_script(self.step, self.family), timeout=180)
         kv = parse_kv(r.out)
         if r.rc != 0 or not kv.get("T0") or not kv.get("PID") or kv.get("ALIVE", "0") in ("", "0"):
             return f"sampler did not start (rc {r.rc}, alive {kv.get('ALIVE', '?')}): {(r.err or r.out).strip()[-300:]}"
@@ -225,7 +303,7 @@ class PerfSession:
         self.marks.append((label, time.time() + self.offset))
 
     def stop(self) -> dict:
-        r = self.tr.run(stop_script(), timeout=120)
+        r = self.tr.run(stop_script(self.family), timeout=180)
         head, _, body = r.out.partition("---CSV---")
         kv = parse_kv(head)
         t_end = float(kv["T1"]) if kv.get("T1", "").isdigit() else time.time() + self.offset

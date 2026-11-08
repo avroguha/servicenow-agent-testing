@@ -191,7 +191,7 @@ class Runner:
         got = [f for f in self.run.packages if f.get("downloaded")]
         missing = [f["file"] for f in self.run.packages if f.get("os_key") in wanted and not f.get("downloaded")]
         self._add("Packages", "download", "Packages downloaded into dist/", PASS if not missing else WARN,
-                  f"{len(got)} files in {self.s.agent_download_dir / safe_name(cat.version)}" + (f"; not available: {missing}" if missing else ""), timer=t)
+                  f"{len(got)} files in {_rel(self.s.agent_download_dir / safe_name(cat.version))}" + (f"; not available: {missing}" if missing else ""), timer=t)
         # what runs inside the package: the embedded Ruby / OpenSSL are what a CVE question is really about
         deb = runtimes.find_deb(self.s.agent_download_dir, safe_name(cat.version))
         if deb:
@@ -361,8 +361,8 @@ class Runner:
 
         # performance sampler: runs on the host through discovery, checks and policies, stopped in resources()
         ps = None
-        if spec.family == "linux" and self.s.perf_sampling:
-            ps = perf.PerfSession(tr, step=self.s.perf_step_s)
+        if self.s.perf_sampling:
+            ps = perf.PerfSession(tr, step=self.s.perf_step_s, family=spec.family)
             err = ps.start()
             if err:
                 self._add("Resources", "perf", "Agent resource usage and host impact while working", WARN, f"performance sampler could not start: {err}", target=name)
@@ -856,6 +856,15 @@ class Runner:
             run.notes.append(f"partial run (targets {', '.join(self.only_targets)}) - written as {path.name}; result.html keeps the last full run")
         LOG.info("report: %s  overall: %s  %s", path, run.overall().upper(), run.counts())
         return run
+
+
+def _rel(p: Path) -> str:
+    """A path for the report: relative to the project when inside it (the report is shared; a home directory is not)."""
+    from .config import PROJECT_ROOT
+    try:
+        return str(Path(p).resolve().relative_to(Path(PROJECT_ROOT).resolve())).replace("\\", "/")
+    except ValueError:
+        return Path(p).name
 
 
 def discovery_failure_reason(log: str) -> str:
