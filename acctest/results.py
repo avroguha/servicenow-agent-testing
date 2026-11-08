@@ -67,6 +67,7 @@ class RunResult:
 
     runtimes: dict = field(default_factory=dict)   # embedded Ruby / OpenSSL / gems of the qualified package (runtimes.Runtimes)
     components: list[dict] = field(default_factory=list)   # inventory rows {component, version, kind, source, target}
+    perf: list[dict] = field(default_factory=list)   # performance sampling per target (perf.analyze output + target, distro)
 
     def agent_failures(self) -> list:
         """Failures the AGENT owns: cause 'agent', or no cause (the evidence did not say - read it before shipping)."""

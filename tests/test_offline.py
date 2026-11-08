@@ -31,7 +31,8 @@ class EnvFile(unittest.TestCase):
     def test_example_env_covers_every_setting_and_holds_no_secret(self):
         env = parse_env_file(ROOT / ".env.example")
         for key in ("SN_INSTANCE", "SN_USER", "SN_PASS", "MID_SERVER_NAME", "MID_HOST", "MID_WS_PORT", "ACC_API_KEY", "AGENT_VERSION",
-                    "TARGETS_FILE", "LAB_MODE", "CPU_SAMPLE_SECONDS", "RESULTS_DIR", "BROWSER_ENABLED", "UNINSTALL_AFTER"):
+                    "TARGETS_FILE", "LAB_MODE", "CPU_SAMPLE_SECONDS", "RESULTS_DIR", "BROWSER_ENABLED", "UNINSTALL_AFTER",
+                    "PERF_SAMPLING", "PERF_STEP_S", "PERF_CPU_AVG_WARN_PCT", "PERF_RSS_PEAK_WARN_MB", "PERF_HOST_IMPACT_WARN_PCT"):
             self.assertIn(key, env, key)
         self.assertEqual(env["ACC_API_KEY"], "")
         self.assertIn("change-me", env["SN_PASS"])
@@ -334,6 +335,58 @@ class Verdict(unittest.TestCase):
         self.assertEqual(rows[0]["version"], "7.1.3")
         for n in ("Go runtime (acc binary)", "Ruby (embedded)", "OpenSSL (embedded)", "libyaml", "gem rexml"):
             self.assertIn(n, names)
+
+
+class Perf(unittest.TestCase):
+    def _csv(self):
+        # 100 ticks/s, 4 cores -> host total advances 400 ticks per second. Rows every 5 s: idle 0-60 s (agent 0 ticks,
+        # host 2% busy), discovery 60-120 s (agent 150 ticks per 5 s = 30% of one core, host 12% busy), checks 120-180 s.
+        rows, total, idle, at, rb = [], 0, 0, 0, 0
+        for k in range(0, 37):
+            t = k * 5
+            if k:
+                busy = 0.02 if t <= 60 else 0.12
+                total += 2000
+                idle += int(2000 * (1 - busy))
+                if t > 60:
+                    at += 150
+                    rb += 1 << 20
+            rss = 60000 if t <= 60 else 90000
+            rows.append(f"{1000 + t},{total},{idle},0.5,8000000,6000000,{at},{rss},15,40,{1 if t <= 60 else 3},{rb},0,1")
+        return "\n".join(rows)
+
+    def test_analyze_phases_and_impact(self):
+        from acctest import perf
+        marks = [("idle", 1000), ("discovery", 1060), ("checks", 1120)]
+        a = perf.analyze(self._csv(), marks, tck=100, ncpu=4, t_end=1180)
+        self.assertEqual(a["samples"], 37)
+        ph = {p["phase"]: p for p in a["phases"]}
+        self.assertEqual(ph["idle"]["agent_cpu_avg"], 0)
+        self.assertAlmostEqual(ph["discovery"]["agent_cpu_avg"], 30.0, places=1)
+        self.assertAlmostEqual(ph["discovery"]["agent_share_avg"], 7.5, places=1)
+        self.assertEqual(ph["discovery"]["agent_rss_peak_mb"], 88)
+        self.assertAlmostEqual(ph["idle"]["host_busy_avg"], 2.0, places=1)
+        self.assertAlmostEqual(ph["checks"]["host_busy_avg"], 12.0, places=1)
+        self.assertEqual(ph["checks"]["agent_read_mb"], 12)
+        self.assertAlmostEqual(a["impact"]["host_busy_delta"], 10.0, places=1)
+        self.assertEqual(a["impact"]["load"]["agent_procs_max"], 3)
+        self.assertIn("host impact", perf.describe(a))
+        self.assertTrue(a["io_readable"])
+        # scripts are fully expanded
+        s = perf.start_script(5)
+        self.assertNotIn("__", s.replace("__DIR__", "").replace("__SCRIPT__", "").replace("__STEP__", "") if False else s.replace("ACCTEST_SAMPLER_EOF", ""))
+        self.assertIn("/tmp/acctest-perf/sampler.sh 5 ", s)
+        self.assertIn("---CSV---", perf.stop_script())
+
+    def test_analyze_handles_garbage_and_exited_children(self):
+        from acctest import perf
+        a = perf.analyze("junk\n1,2\n", [("idle", 0)], 100, 1, 10)
+        self.assertEqual(a["samples"], 0)
+        self.assertEqual(perf.describe(a), "no samples")
+        # a child exiting makes the tree counters drop: the delta is clamped, never negative
+        csv_text = "100,1000,900,0,1,1,500,1000,1,1,2,0,0,1\n105,1500,1350,0,1,1,200,800,1,1,1,0,0,1"
+        a = perf.analyze(csv_text, [("idle", 100)], 100, 1, 105)
+        self.assertEqual(a["overall"]["agent_cpu_avg"], 0)
 
 
 class Report(unittest.TestCase):

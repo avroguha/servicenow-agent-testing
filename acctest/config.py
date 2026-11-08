@@ -139,6 +139,11 @@ class Settings:
     cpu_sample_seconds: int = 60
     cpu_tolerance_pct: float = 5.0
     cleanup_grace_s: int = 120
+    perf_sampling: bool = True            # continuous host/agent sampler through discovery, checks and policies (Linux)
+    perf_step_s: int = 5
+    perf_cpu_avg_warn_pct: float = 25.0   # agent tree avg CPU (% of one core) while working above this -> WARN
+    perf_rss_peak_warn_mb: int = 400      # agent tree RSS peak above this -> WARN
+    perf_host_impact_warn_pct: float = 10.0  # host CPU busy, working minus idle, above this many points -> WARN
     uninstall_after: bool = False
     stop_on_install_failure: bool = False
 
@@ -218,6 +223,11 @@ class Settings:
         s.cpu_sample_seconds = _int(g("CPU_SAMPLE_SECONDS"), 60)
         s.cpu_tolerance_pct = _float(g("CPU_TOLERANCE_PCT"), 5.0)
         s.cleanup_grace_s = _int(g("CLEANUP_GRACE_S"), 120)
+        s.perf_sampling = _bool(g("PERF_SAMPLING"), True)
+        s.perf_step_s = _int(g("PERF_STEP_S"), 5)
+        s.perf_cpu_avg_warn_pct = _float(g("PERF_CPU_AVG_WARN_PCT"), 25.0)
+        s.perf_rss_peak_warn_mb = _int(g("PERF_RSS_PEAK_WARN_MB"), 400)
+        s.perf_host_impact_warn_pct = _float(g("PERF_HOST_IMPACT_WARN_PCT"), 10.0)
         s.uninstall_after = _bool(g("UNINSTALL_AFTER"), False)
         s.stop_on_install_failure = _bool(g("STOP_ON_INSTALL_FAILURE"), False)
 

@@ -167,6 +167,38 @@ def render(run: RunResult) -> str:
                          f"<td class='small'>{_e(c.get('source'))}</td><td class='small'>{_e(c.get('target') or 'package')}</td></tr>")
         parts.append("</table>")
 
+    # performance: what the agent cost the host while it worked
+    if run.perf:
+        parts.append("<h2>Performance <span class='small muted'>(agent resource usage and host impact; raw samples in perf-&lt;target&gt;.csv)</span></h2>"
+                     "<div class='card small'>Sampled on the host every few seconds while the agent worked. <b>Agent CPU</b> is the whole agent process tree "
+                     "(acc plus the checks and osquery it spawns) in % of one core; <b>share of host</b> is that same CPU as a fraction of all cores. "
+                     "<b>Host CPU busy</b> is the whole machine, everything included. The <i>idle</i> row is the agent connected with nothing to do; "
+                     "the difference between the working phases and idle is the agent's impact on the host.</div>")
+        for p in run.perf:
+            parts.append(f"<h3>{_e(p.get('target'))} <span class='small muted'>{_e(p.get('distro') or '')} &middot; {p.get('ncpu')} cores &middot; "
+                         f"{p.get('samples')} samples every {p.get('step_s', '?')}s</span></h3>")
+            parts.append("<table><tr><th>Phase</th><th class='num'>Seconds</th><th class='num'>Agent CPU avg / peak<br><span class='muted small'>% of one core</span></th>"
+                         "<th class='num'>Share of host</th><th class='num'>Agent RSS avg / peak MB</th><th class='num'>Procs / threads / fds</th>"
+                         "<th class='num'>Disk read / written MB</th><th class='num'>Host CPU busy avg / peak</th><th class='num'>Load1 max</th><th class='num'>Host memory used &Delta; MB</th></tr>")
+            rows = list(p.get("phases", [])) + [dict(p.get("impact", {}).get("load", {}), phase="all working phases"), dict(p.get("overall", {}), phase="whole window")]
+            for ph in rows:
+                if not ph.get("samples"):
+                    parts.append(f"<tr><td>{_e(ph.get('phase'))}</td><td class='num'>{ph.get('duration_s', 0)}</td><td colspan='8' class='muted small'>no samples</td></tr>")
+                    continue
+                parts.append(f"<tr><td><b>{_e(ph.get('phase'))}</b></td><td class='num'>{ph['duration_s']}</td>"
+                             f"<td class='num'>{ph['agent_cpu_avg']:g} / {ph['agent_cpu_peak']:g}</td><td class='num'>{ph['agent_share_avg']:g}%</td>"
+                             f"<td class='num'>{ph['agent_rss_avg_mb']} / {ph['agent_rss_peak_mb']}</td>"
+                             f"<td class='num'>{ph['agent_procs_max']} / {ph['agent_threads_max']} / {ph['agent_fds_max']}</td>"
+                             f"<td class='num'>{ph['agent_read_mb']:g} / {ph['agent_write_mb']:g}</td>"
+                             f"<td class='num'>{ph['host_busy_avg']:g}% / {ph['host_busy_peak']:g}%</td><td class='num'>{ph['load1_max']:g}</td>"
+                             f"<td class='num'>{ph['host_mem_delta_mb']:+d}</td></tr>")
+            parts.append("</table>")
+            imp = p.get("impact", {})
+            if imp.get("host_busy_delta") is not None:
+                parts.append(f"<div class='small' style='margin:-6px 0 14px'>Host impact: CPU busy <b>{imp['host_busy_delta']:+g} points</b> working vs idle; "
+                             f"the agent tree itself averaged <b>{imp.get('agent_share_load_avg'):g}%</b> of the host's CPU capacity while working"
+                             + ("" if p.get("io_readable") else "; disk counters were not readable on this host (sampler not root)") + ".</div>")
+
     # all results by section
     parts.append("<h2>All tests</h2>")
     for s in SECTIONS:
@@ -212,4 +244,15 @@ def write_report(run: RunResult, out_dir: Path, basename: str = "result") -> Pat
             w.writeheader()
             for c in run.components:
                 w.writerow({**c, "target": c.get("target") or "package"})
+    for p_ in run.perf:
+        series = p_.get("series") or []
+        if not series:
+            continue
+        import csv
+        fn = (f"perf-{p_.get('target')}.csv" if basename == "result" else f"{basename}-perf-{p_.get('target')}.csv")
+        with (out_dir / fn).open("w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=list(series[0].keys()), extrasaction="ignore")
+            w.writeheader()
+            for row in series:
+                w.writerow(row)
     return p

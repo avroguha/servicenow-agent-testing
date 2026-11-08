@@ -13,7 +13,7 @@ import re
 import time
 from pathlib import Path
 
-from . import agents, checks, discovery, fixtures, mid as midmod, resources, runtimes
+from . import agents, checks, discovery, fixtures, mid as midmod, perf, resources, runtimes
 from .browser import Browser
 from .config import Settings, TargetSpec, load_targets
 from .installer import Installer
@@ -45,6 +45,7 @@ class Runner:
         self.backend_url = settings.backend_url()
         self._facts: dict[str, dict] = {}   # probe facts per target name (host, ip, distro ...)
         self._env: dict[str, dict] = {}     # environment prerequisites per target name
+        self._perf: dict[str, perf.PerfSession | None] = {}   # running performance sampler per target name
 
     # ---- helpers -------------------------------------------------------------------------------------------------
     def _add(self, section: str, rid: str, name: str, status: str, message: str = "", details: str = "", target: str = "",
@@ -358,14 +359,30 @@ class Runner:
             return
         self._snapshot()
 
+        # performance sampler: runs on the host through discovery, checks and policies, stopped in resources()
+        ps = None
+        if spec.family == "linux" and self.s.perf_sampling:
+            ps = perf.PerfSession(tr, step=self.s.perf_step_s)
+            err = ps.start()
+            if err:
+                self._add("Resources", "perf", "Agent resource usage and host impact while working", WARN, f"performance sampler could not start: {err}", target=name)
+                ps = None
+        self._perf[name] = ps
+
         # discovery
+        if ps:
+            ps.mark("discovery")
         ci = self.discovery(spec, inst, rec, agent_id)
         self._snapshot()
         # checks + policies need the host CI
         if ci:
+            if ps:
+                ps.mark("checks")
             self.checks(spec, rec, ci)
             self._snapshot()
             if self.s.run_policies:
+                if ps:
+                    ps.mark("policies")
                 self.policies(spec, rec, ci)
                 self._snapshot()
         else:
@@ -675,6 +692,9 @@ class Runner:
     # ---- resources -------------------------------------------------------------------------------------------------
     def resources(self, spec: TargetSpec, tr, inst: Installer, cfg: str) -> None:
         name = spec.name
+        ps = self._perf.pop(name, None)
+        if ps:
+            ps.mark("inventory")
         t = Timer()
         inv = resources.inventory(tr, spec.family)
         for c in inv["components"]:
@@ -691,6 +711,8 @@ class Runner:
                   f"monitor_interval {lim['monitor_interval_sec']:g}s, max-running-checks {lim['max_running_checks']:g}" + (" (DISABLED)" if lim["disabled"] else ""),
                   target=name, evidence=lim)
         t = Timer()
+        if ps:
+            ps.mark("idle")
         LOG.info("  sampling agent CPU on %s for %ss", name, self.s.cpu_sample_seconds)
         smp = resources.sample_cpu(tr, spec.family, self.s.cpu_sample_seconds)
         if "ERROR" in smp or "AVG_PCT" not in smp:
@@ -706,6 +728,13 @@ class Runner:
                       f"avg {avg:.0f}% / peak {peak:.0f}% of one core over {smp.get('SAMPLES')} samples ({self.s.cpu_sample_seconds}s), limit {limit:g}% (+{self.s.cpu_tolerance_pct:g} tolerance); "
                       f"RSS {int(smp.get('RSS_KB', 0) or 0) // 1024} MB, {smp.get('THREADS')} threads, up to {smp.get('MAX_PROCS')} processes", target=name, timer=t, evidence=smp,
                       cause="" if st != FAIL else "agent")
+        if ps:
+            t = Timer()
+            try:
+                a = ps.stop()
+            except Exception as e:  # the sampler must never sink the run
+                a = {"samples": 0, "error": str(e)}
+            self.perf_result(spec, a, t)
         if spec.family == "linux":
             t = Timer()
             pl = resources.plugin_state(tr, spec.family)
@@ -738,6 +767,31 @@ class Runner:
         cache = int(cl.get("CACHE_DU_KB", "0") or 0)
         self._add("Cleanup", "footprint", "Disk footprint of cache and logs", PASS if cache < 512 * 1024 else WARN,
                   f"cache {cache // 1024} MB, logs {int(cl.get('LOG_KB', '0') or 0) // 1024} MB", target=name)
+
+    def perf_result(self, spec: TargetSpec, a: dict, t: Timer) -> None:
+        """One test row + the per-phase table data from a finished performance sampling session."""
+        name = spec.name
+        title = "Agent resource usage and host impact while working"
+        if not a.get("samples"):
+            self._add("Resources", "perf", title, WARN, f"performance sampler returned no samples ({a.get('error') or a.get('sampler_log') or 'unknown reason'})",
+                      target=name, timer=t, evidence={k: v for k, v in a.items() if k != "series"})
+            return
+        L = a["impact"]["load"]
+        flags = []
+        if L.get("samples"):
+            if L["agent_cpu_avg"] > self.s.perf_cpu_avg_warn_pct:
+                flags.append(f"agent avg CPU {L['agent_cpu_avg']:g}% of one core while working > {self.s.perf_cpu_avg_warn_pct:g}%")
+            if L["agent_rss_peak_mb"] > self.s.perf_rss_peak_warn_mb:
+                flags.append(f"agent RSS peak {L['agent_rss_peak_mb']} MB > {self.s.perf_rss_peak_warn_mb} MB")
+        d = a["impact"].get("host_busy_delta")
+        if d is not None and d > self.s.perf_host_impact_warn_pct:
+            flags.append(f"host CPU busy {d:+g} points working vs idle > {self.s.perf_host_impact_warn_pct:g}")
+        st = WARN if flags else PASS
+        msg = perf.describe(a) + (f" [above the warning thresholds: {'; '.join(flags)}]" if flags else "")
+        self.run.perf.append({"target": name, "distro": spec.distro, **a})
+        self._add("Resources", "perf", title, st, msg, target=name, timer=t,
+                  evidence={"ncpu": a["ncpu"], "step_s": a.get("step_s"), "samples": a["samples"], "io_readable": a.get("io_readable"),
+                            "phases": "; ".join(f"{p['phase']} {p.get('duration_s', 0)}s" for p in a["phases"]), "impact": a["impact"]})
 
     # ---- UI --------------------------------------------------------------------------------------------------------
     def ui(self, spec: TargetSpec, b: Browser, rec: dict, ci: dict | None) -> None:

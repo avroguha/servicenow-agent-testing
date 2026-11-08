@@ -1,0 +1,927 @@
+component,version,kind,source,target
+Agent Client Collector,7.1.3,agent package,agent-client-collector-7.1.3-ubuntu-1804_amd64.deb,package
+Go runtime (acc binary),1.26.10,compiler/runtime,bin/acc,package
+Ruby (embedded),3.3.13 (2026-10-23),interpreter,embedded/bin/ruby,package
+OpenSSL (embedded),3.5.9 (29 Sep 2026),crypto library,embedded/lib/libcrypto,package
+libcrypt,1.1.0,shared library,embedded/lib,package
+libffi,8.1.2,shared library,embedded/lib,package
+libruby,3.3.13,shared library,embedded/lib,package
+libyaml-0,2.0.9,shared library,embedded/lib,package
+libz,1.2.13,shared library,embedded/lib,package
+gem abbrev,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem addressable,2.9.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem base64,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem benchmark,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem bigdecimal,3.1.5,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem bundler,2.5.22,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem cgi,0.5.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem csv,3.2.8,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem date,3.3.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem debug,1.9.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem delegate,0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem did_you_mean,1.6.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem digest,3.1.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem drb,2.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem english,0.8.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem erb,4.0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem error_highlight,0.6.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem etc,1.4.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem fcntl,1.1.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem ffi-compiler,1.4.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem fiddle,1.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem fileutils,1.7.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem find,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem forwardable,1.3.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem getoptlong,0.2.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem io-nonblock,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem io-wait,0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem ipaddr,1.2.6,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem irb,1.13.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem json,2.7.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem llhttp-ffi,0.5.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem logger,1.6.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem matrix,0.4.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem minitest,5.20.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem mixlib-cli,1.7.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem mutex_m,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-ftp,0.3.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-http,0.4.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-imap,0.5.15,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-pop,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-protocol,0.2.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem net-smtp,0.5.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem nkf,0.1.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem observer,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem open-uri,0.4.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem open3,0.2.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem openssl,3.2.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem optparse,0.4.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem ostruct,0.6.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem pathname,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem power_assert,2.0.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem pp,0.5.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem prettyprint,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem prime,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem prism,0.19.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem pstore,0.2.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem psych,5.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem public_suffix,7.0.5,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem racc,1.7.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rake,13.1.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rb-readline,0.5.5,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rbs,3.5.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rdoc,6.6.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem readline,0.0.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem reline,0.5.10,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem resolv,0.3.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rexml,3.4.4,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rinda,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem rss,0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem ruby2_keywords,0.0.5,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem securerandom,0.3.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem sensu-plugin,4.0.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem set,1.1.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem shellwords,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem singleton,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem stringio,3.1.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem strscan,3.0.9,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem syntax_suggest,2.0.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem syslog,0.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem tempfile,0.2.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem test-unit,3.6.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem time,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem timeout,0.4.1,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem tmpdir,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem tsort,0.2.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem typeprof,0.21.9,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem un,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem uri,0.13.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem weakref,0.1.3,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem win32ole,1.8.10,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem yaml,0.3.0,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+gem zlib,3.1.2,Ruby gem,embedded/lib/ruby/gems/3.3.0,package
+Agent Client Collector,"acc version 7.1.3, build dd94c9bd05a867348c700f5a8e65f4eb1112e8c0, built 2026-11-04T01:03:47.750Z",agent,7.1.3-3,acc-ubuntu2404
+Go runtime (acc binary),go1.26.10,compiler/runtime,bin/acc,acc-ubuntu2404
+Ruby (embedded),ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux],interpreter,embedded/bin/ruby,acc-ubuntu2404
+OpenSSL (embedded),OpenSSL 3.5.9 29 Sep 2026,crypto library,embedded/lib,acc-ubuntu2404
+osquery (plugin asset),osqueryi version 5.18.1,tool (from the instance),agent cache,acc-ubuntu2404
+libcrypt.so.1,,shared library,embedded/lib,acc-ubuntu2404
+libcrypt.so.1.1.0,,shared library,embedded/lib,acc-ubuntu2404
+libcrypto.so.3,,shared library,embedded/lib,acc-ubuntu2404
+libffi.so.8,,shared library,embedded/lib,acc-ubuntu2404
+libffi.so.8.1.2,,shared library,embedded/lib,acc-ubuntu2404
+libowcrypt.so.1,,shared library,embedded/lib,acc-ubuntu2404
+libruby.so.3.3,,shared library,embedded/lib,acc-ubuntu2404
+libruby.so.3.3.13,,shared library,embedded/lib,acc-ubuntu2404
+libssl.so.3,,shared library,embedded/lib,acc-ubuntu2404
+libyaml-0.so.2,,shared library,embedded/lib,acc-ubuntu2404
+libyaml-0.so.2.0.9,,shared library,embedded/lib,acc-ubuntu2404
+libz.so.1,,shared library,embedded/lib,acc-ubuntu2404
+libz.so.1.2.13,,shared library,embedded/lib,acc-ubuntu2404
+gem abbrev,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem addressable,2.9.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem base64,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem benchmark,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem bigdecimal,3.1.5,Ruby gem,embedded ruby,acc-ubuntu2404
+gem bundler,2.5.22,Ruby gem,embedded ruby,acc-ubuntu2404
+gem cgi,0.5.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem csv,3.2.8,Ruby gem,embedded ruby,acc-ubuntu2404
+gem date,3.3.4,Ruby gem,embedded ruby,acc-ubuntu2404
+gem debug,1.9.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem delegate,0.3.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem did_you_mean,1.6.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem digest,3.1.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem drb,2.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem english,0.8.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem erb,4.0.3.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem error_highlight,0.6.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem etc,1.4.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem fcntl,1.1.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem ffi,1.17.0 x86_64-linux-gnu,Ruby gem,embedded ruby,acc-ubuntu2404
+gem ffi-compiler,1.4.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem fiddle,1.1.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem fileutils,1.7.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem find,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem forwardable,1.3.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem getoptlong,0.2.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem io-nonblock,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem io-wait,0.3.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem ipaddr,1.2.6,Ruby gem,embedded ruby,acc-ubuntu2404
+gem irb,1.13.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem json,"2.7.2, 2.7.1",Ruby gem,embedded ruby,acc-ubuntu2404
+gem llhttp-ffi,0.5.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem logger,1.6.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem matrix,0.4.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem minitest,5.20.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem mixlib-cli,1.7.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem mutex_m,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem net-ftp,0.3.4,Ruby gem,embedded ruby,acc-ubuntu2404
+gem net-http,0.4.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem net-imap,0.5.15,Ruby gem,embedded ruby,acc-ubuntu2404
+gem net-pop,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem net-protocol,0.2.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem net-smtp,0.5.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem nkf,0.1.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem observer,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem open-uri,0.4.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem open3,0.2.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem openssl,3.2.4,Ruby gem,embedded ruby,acc-ubuntu2404
+gem optparse,0.4.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem ostruct,0.6.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem pathname,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem power_assert,2.0.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem pp,0.5.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem prettyprint,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem prime,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem prism,0.19.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem pstore,0.2.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem psych,5.1.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem public_suffix,7.0.5,Ruby gem,embedded ruby,acc-ubuntu2404
+gem racc,1.7.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem rake,13.1.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem rb-readline,0.5.5,Ruby gem,embedded ruby,acc-ubuntu2404
+gem rbs,3.5.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem rdoc,6.6.3.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem readline,0.0.4,Ruby gem,embedded ruby,acc-ubuntu2404
+gem reline,0.5.10,Ruby gem,embedded ruby,acc-ubuntu2404
+gem resolv,0.3.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem rexml,3.4.4,Ruby gem,embedded ruby,acc-ubuntu2404
+gem rinda,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem rss,0.3.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem ruby2_keywords,0.0.5,Ruby gem,embedded ruby,acc-ubuntu2404
+gem securerandom,0.3.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem sensu-plugin,4.0.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem set,1.1.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem shellwords,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem singleton,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem stringio,3.1.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem strscan,3.0.9,Ruby gem,embedded ruby,acc-ubuntu2404
+gem syntax_suggest,2.0.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem syslog,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2404
+gem tempfile,0.2.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem test-unit,3.6.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem time,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem timeout,0.4.1,Ruby gem,embedded ruby,acc-ubuntu2404
+gem tmpdir,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem tsort,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem typeprof,0.21.9,Ruby gem,embedded ruby,acc-ubuntu2404
+gem un,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem uri,0.13.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem weakref,0.1.3,Ruby gem,embedded ruby,acc-ubuntu2404
+gem win32ole,1.8.10,Ruby gem,embedded ruby,acc-ubuntu2404
+gem yaml,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2404
+gem zlib,3.1.2,Ruby gem,embedded ruby,acc-ubuntu2404
+plugin asset acc-f-modules,"7 files, 76 KB",plugin content (from the instance),agent cache,acc-ubuntu2404
+plugin asset acc-visibility-modules,"21 files, 184 KB",plugin content (from the instance),agent cache,acc-ubuntu2404
+plugin asset acctest-scripts,"4 files, 28 KB",plugin content (from the instance),agent cache,acc-ubuntu2404
+plugin asset acc-visibility-modules-common,"45 files, 408 KB",plugin content (from the instance),agent cache,acc-ubuntu2404
+plugin asset osquery,"1 files, 85152 KB",plugin content (from the instance),agent cache,acc-ubuntu2404
+plugin asset acc-f-commons,"77 files, 608 KB",plugin content (from the instance),agent cache,acc-ubuntu2404
+Agent Client Collector,"acc version 7.1.3, build dd94c9bd05a867348c700f5a8e65f4eb1112e8c0, built 2026-11-04T01:03:47.750Z",agent,7.1.3-3,acc-ubuntu2204
+Go runtime (acc binary),go1.26.10,compiler/runtime,bin/acc,acc-ubuntu2204
+Ruby (embedded),ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux],interpreter,embedded/bin/ruby,acc-ubuntu2204
+OpenSSL (embedded),OpenSSL 3.5.9 29 Sep 2026,crypto library,embedded/lib,acc-ubuntu2204
+osquery (plugin asset),osqueryi version 5.18.1,tool (from the instance),agent cache,acc-ubuntu2204
+libcrypt.so.1,,shared library,embedded/lib,acc-ubuntu2204
+libcrypt.so.1.1.0,,shared library,embedded/lib,acc-ubuntu2204
+libcrypto.so.3,,shared library,embedded/lib,acc-ubuntu2204
+libffi.so.8,,shared library,embedded/lib,acc-ubuntu2204
+libffi.so.8.1.2,,shared library,embedded/lib,acc-ubuntu2204
+libowcrypt.so.1,,shared library,embedded/lib,acc-ubuntu2204
+libruby.so.3.3,,shared library,embedded/lib,acc-ubuntu2204
+libruby.so.3.3.13,,shared library,embedded/lib,acc-ubuntu2204
+libssl.so.3,,shared library,embedded/lib,acc-ubuntu2204
+libyaml-0.so.2,,shared library,embedded/lib,acc-ubuntu2204
+libyaml-0.so.2.0.9,,shared library,embedded/lib,acc-ubuntu2204
+libz.so.1,,shared library,embedded/lib,acc-ubuntu2204
+libz.so.1.2.13,,shared library,embedded/lib,acc-ubuntu2204
+gem abbrev,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem addressable,2.9.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem base64,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem benchmark,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem bigdecimal,3.1.5,Ruby gem,embedded ruby,acc-ubuntu2204
+gem bundler,2.5.22,Ruby gem,embedded ruby,acc-ubuntu2204
+gem cgi,0.5.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem csv,3.2.8,Ruby gem,embedded ruby,acc-ubuntu2204
+gem date,3.3.4,Ruby gem,embedded ruby,acc-ubuntu2204
+gem debug,1.9.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem delegate,0.3.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem did_you_mean,1.6.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem digest,3.1.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem drb,2.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem english,0.8.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem erb,4.0.3.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem error_highlight,0.6.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem etc,1.4.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem fcntl,1.1.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem ffi,1.17.0 x86_64-linux-gnu,Ruby gem,embedded ruby,acc-ubuntu2204
+gem ffi-compiler,1.4.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem fiddle,1.1.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem fileutils,1.7.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem find,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem forwardable,1.3.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem getoptlong,0.2.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem io-nonblock,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem io-wait,0.3.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem ipaddr,1.2.6,Ruby gem,embedded ruby,acc-ubuntu2204
+gem irb,1.13.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem json,"2.7.2, 2.7.1",Ruby gem,embedded ruby,acc-ubuntu2204
+gem llhttp-ffi,0.5.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem logger,1.6.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem matrix,0.4.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem minitest,5.20.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem mixlib-cli,1.7.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem mutex_m,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem net-ftp,0.3.4,Ruby gem,embedded ruby,acc-ubuntu2204
+gem net-http,0.4.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem net-imap,0.5.15,Ruby gem,embedded ruby,acc-ubuntu2204
+gem net-pop,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem net-protocol,0.2.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem net-smtp,0.5.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem nkf,0.1.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem observer,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem open-uri,0.4.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem open3,0.2.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem openssl,3.2.4,Ruby gem,embedded ruby,acc-ubuntu2204
+gem optparse,0.4.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem ostruct,0.6.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem pathname,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem power_assert,2.0.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem pp,0.5.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem prettyprint,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem prime,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem prism,0.19.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem pstore,0.2.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem psych,5.1.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem public_suffix,7.0.5,Ruby gem,embedded ruby,acc-ubuntu2204
+gem racc,1.7.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem rake,13.1.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem rb-readline,0.5.5,Ruby gem,embedded ruby,acc-ubuntu2204
+gem rbs,3.5.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem rdoc,6.6.3.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem readline,0.0.4,Ruby gem,embedded ruby,acc-ubuntu2204
+gem reline,0.5.10,Ruby gem,embedded ruby,acc-ubuntu2204
+gem resolv,0.3.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem rexml,3.4.4,Ruby gem,embedded ruby,acc-ubuntu2204
+gem rinda,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem rss,0.3.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem ruby2_keywords,0.0.5,Ruby gem,embedded ruby,acc-ubuntu2204
+gem securerandom,0.3.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem sensu-plugin,4.0.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem set,1.1.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem shellwords,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem singleton,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem stringio,3.1.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem strscan,3.0.9,Ruby gem,embedded ruby,acc-ubuntu2204
+gem syntax_suggest,2.0.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem syslog,0.1.2,Ruby gem,embedded ruby,acc-ubuntu2204
+gem tempfile,0.2.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem test-unit,3.6.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem time,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem timeout,0.4.1,Ruby gem,embedded ruby,acc-ubuntu2204
+gem tmpdir,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem tsort,0.2.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem typeprof,0.21.9,Ruby gem,embedded ruby,acc-ubuntu2204
+gem un,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem uri,0.13.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem weakref,0.1.3,Ruby gem,embedded ruby,acc-ubuntu2204
+gem win32ole,1.8.10,Ruby gem,embedded ruby,acc-ubuntu2204
+gem yaml,0.3.0,Ruby gem,embedded ruby,acc-ubuntu2204
+gem zlib,3.1.2,Ruby gem,embedded ruby,acc-ubuntu2204
+plugin asset acc-f-modules,"7 files, 76 KB",plugin content (from the instance),agent cache,acc-ubuntu2204
+plugin asset osquery,"1 files, 85152 KB",plugin content (from the instance),agent cache,acc-ubuntu2204
+plugin asset acc-visibility-modules-common,"45 files, 408 KB",plugin content (from the instance),agent cache,acc-ubuntu2204
+plugin asset acc-visibility-modules,"21 files, 184 KB",plugin content (from the instance),agent cache,acc-ubuntu2204
+plugin asset acc-f-commons,"77 files, 608 KB",plugin content (from the instance),agent cache,acc-ubuntu2204
+plugin asset acctest-scripts,"4 files, 28 KB",plugin content (from the instance),agent cache,acc-ubuntu2204
+Agent Client Collector,"acc version 7.1.3, build dd94c9bd05a867348c700f5a8e65f4eb1112e8c0, built 2026-11-04T01:03:47.750Z",agent,7.1.3-3,acc-debian12
+Go runtime (acc binary),go1.26.10,compiler/runtime,bin/acc,acc-debian12
+Ruby (embedded),ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux],interpreter,embedded/bin/ruby,acc-debian12
+OpenSSL (embedded),OpenSSL 3.5.9 29 Sep 2026,crypto library,embedded/lib,acc-debian12
+osquery (plugin asset),osqueryi version 5.18.1,tool (from the instance),agent cache,acc-debian12
+libcrypt.so.1,,shared library,embedded/lib,acc-debian12
+libcrypt.so.1.1.0,,shared library,embedded/lib,acc-debian12
+libcrypto.so.3,,shared library,embedded/lib,acc-debian12
+libffi.so.8,,shared library,embedded/lib,acc-debian12
+libffi.so.8.1.2,,shared library,embedded/lib,acc-debian12
+libowcrypt.so.1,,shared library,embedded/lib,acc-debian12
+libruby.so.3.3,,shared library,embedded/lib,acc-debian12
+libruby.so.3.3.13,,shared library,embedded/lib,acc-debian12
+libssl.so.3,,shared library,embedded/lib,acc-debian12
+libyaml-0.so.2,,shared library,embedded/lib,acc-debian12
+libyaml-0.so.2.0.9,,shared library,embedded/lib,acc-debian12
+libz.so.1,,shared library,embedded/lib,acc-debian12
+libz.so.1.2.13,,shared library,embedded/lib,acc-debian12
+gem abbrev,0.1.2,Ruby gem,embedded ruby,acc-debian12
+gem addressable,2.9.0,Ruby gem,embedded ruby,acc-debian12
+gem base64,0.2.0,Ruby gem,embedded ruby,acc-debian12
+gem benchmark,0.3.0,Ruby gem,embedded ruby,acc-debian12
+gem bigdecimal,3.1.5,Ruby gem,embedded ruby,acc-debian12
+gem bundler,2.5.22,Ruby gem,embedded ruby,acc-debian12
+gem cgi,0.5.0,Ruby gem,embedded ruby,acc-debian12
+gem csv,3.2.8,Ruby gem,embedded ruby,acc-debian12
+gem date,3.3.4,Ruby gem,embedded ruby,acc-debian12
+gem debug,1.9.2,Ruby gem,embedded ruby,acc-debian12
+gem delegate,0.3.1,Ruby gem,embedded ruby,acc-debian12
+gem did_you_mean,1.6.3,Ruby gem,embedded ruby,acc-debian12
+gem digest,3.1.1,Ruby gem,embedded ruby,acc-debian12
+gem drb,2.2.0,Ruby gem,embedded ruby,acc-debian12
+gem english,0.8.0,Ruby gem,embedded ruby,acc-debian12
+gem erb,4.0.3.1,Ruby gem,embedded ruby,acc-debian12
+gem error_highlight,0.6.0,Ruby gem,embedded ruby,acc-debian12
+gem etc,1.4.3,Ruby gem,embedded ruby,acc-debian12
+gem fcntl,1.1.0,Ruby gem,embedded ruby,acc-debian12
+gem ffi,1.17.0 x86_64-linux-gnu,Ruby gem,embedded ruby,acc-debian12
+gem ffi-compiler,1.4.3,Ruby gem,embedded ruby,acc-debian12
+gem fiddle,1.1.2,Ruby gem,embedded ruby,acc-debian12
+gem fileutils,1.7.2,Ruby gem,embedded ruby,acc-debian12
+gem find,0.2.0,Ruby gem,embedded ruby,acc-debian12
+gem forwardable,1.3.3,Ruby gem,embedded ruby,acc-debian12
+gem getoptlong,0.2.1,Ruby gem,embedded ruby,acc-debian12
+gem io-nonblock,0.3.0,Ruby gem,embedded ruby,acc-debian12
+gem io-wait,0.3.1,Ruby gem,embedded ruby,acc-debian12
+gem ipaddr,1.2.6,Ruby gem,embedded ruby,acc-debian12
+gem irb,1.13.1,Ruby gem,embedded ruby,acc-debian12
+gem json,"2.7.2, 2.7.1",Ruby gem,embedded ruby,acc-debian12
+gem llhttp-ffi,0.5.0,Ruby gem,embedded ruby,acc-debian12
+gem logger,1.6.0,Ruby gem,embedded ruby,acc-debian12
+gem matrix,0.4.2,Ruby gem,embedded ruby,acc-debian12
+gem minitest,5.20.0,Ruby gem,embedded ruby,acc-debian12
+gem mixlib-cli,1.7.0,Ruby gem,embedded ruby,acc-debian12
+gem mutex_m,0.2.0,Ruby gem,embedded ruby,acc-debian12
+gem net-ftp,0.3.4,Ruby gem,embedded ruby,acc-debian12
+gem net-http,0.4.1,Ruby gem,embedded ruby,acc-debian12
+gem net-imap,0.5.15,Ruby gem,embedded ruby,acc-debian12
+gem net-pop,0.1.2,Ruby gem,embedded ruby,acc-debian12
+gem net-protocol,0.2.2,Ruby gem,embedded ruby,acc-debian12
+gem net-smtp,0.5.1,Ruby gem,embedded ruby,acc-debian12
+gem nkf,0.1.3,Ruby gem,embedded ruby,acc-debian12
+gem observer,0.1.2,Ruby gem,embedded ruby,acc-debian12
+gem open-uri,0.4.1,Ruby gem,embedded ruby,acc-debian12
+gem open3,0.2.1,Ruby gem,embedded ruby,acc-debian12
+gem openssl,3.2.4,Ruby gem,embedded ruby,acc-debian12
+gem optparse,0.4.0,Ruby gem,embedded ruby,acc-debian12
+gem ostruct,0.6.0,Ruby gem,embedded ruby,acc-debian12
+gem pathname,0.3.0,Ruby gem,embedded ruby,acc-debian12
+gem power_assert,2.0.3,Ruby gem,embedded ruby,acc-debian12
+gem pp,0.5.0,Ruby gem,embedded ruby,acc-debian12
+gem prettyprint,0.2.0,Ruby gem,embedded ruby,acc-debian12
+gem prime,0.1.2,Ruby gem,embedded ruby,acc-debian12
+gem prism,0.19.0,Ruby gem,embedded ruby,acc-debian12
+gem pstore,0.2.1,Ruby gem,embedded ruby,acc-debian12
+gem psych,5.1.2,Ruby gem,embedded ruby,acc-debian12
+gem public_suffix,7.0.5,Ruby gem,embedded ruby,acc-debian12
+gem racc,1.7.3,Ruby gem,embedded ruby,acc-debian12
+gem rake,13.1.0,Ruby gem,embedded ruby,acc-debian12
+gem rb-readline,0.5.5,Ruby gem,embedded ruby,acc-debian12
+gem rbs,3.5.0,Ruby gem,embedded ruby,acc-debian12
+gem rdoc,6.6.3.1,Ruby gem,embedded ruby,acc-debian12
+gem readline,0.0.4,Ruby gem,embedded ruby,acc-debian12
+gem reline,0.5.10,Ruby gem,embedded ruby,acc-debian12
+gem resolv,0.3.2,Ruby gem,embedded ruby,acc-debian12
+gem rexml,3.4.4,Ruby gem,embedded ruby,acc-debian12
+gem rinda,0.2.0,Ruby gem,embedded ruby,acc-debian12
+gem rss,0.3.1,Ruby gem,embedded ruby,acc-debian12
+gem ruby2_keywords,0.0.5,Ruby gem,embedded ruby,acc-debian12
+gem securerandom,0.3.1,Ruby gem,embedded ruby,acc-debian12
+gem sensu-plugin,4.0.0,Ruby gem,embedded ruby,acc-debian12
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded ruby,acc-debian12
+gem set,1.1.0,Ruby gem,embedded ruby,acc-debian12
+gem shellwords,0.2.0,Ruby gem,embedded ruby,acc-debian12
+gem singleton,0.2.0,Ruby gem,embedded ruby,acc-debian12
+gem stringio,3.1.1,Ruby gem,embedded ruby,acc-debian12
+gem strscan,3.0.9,Ruby gem,embedded ruby,acc-debian12
+gem syntax_suggest,2.0.3,Ruby gem,embedded ruby,acc-debian12
+gem syslog,0.1.2,Ruby gem,embedded ruby,acc-debian12
+gem tempfile,0.2.1,Ruby gem,embedded ruby,acc-debian12
+gem test-unit,3.6.1,Ruby gem,embedded ruby,acc-debian12
+gem time,0.3.0,Ruby gem,embedded ruby,acc-debian12
+gem timeout,0.4.1,Ruby gem,embedded ruby,acc-debian12
+gem tmpdir,0.2.0,Ruby gem,embedded ruby,acc-debian12
+gem tsort,0.2.0,Ruby gem,embedded ruby,acc-debian12
+gem typeprof,0.21.9,Ruby gem,embedded ruby,acc-debian12
+gem un,0.3.0,Ruby gem,embedded ruby,acc-debian12
+gem uri,0.13.3,Ruby gem,embedded ruby,acc-debian12
+gem weakref,0.1.3,Ruby gem,embedded ruby,acc-debian12
+gem win32ole,1.8.10,Ruby gem,embedded ruby,acc-debian12
+gem yaml,0.3.0,Ruby gem,embedded ruby,acc-debian12
+gem zlib,3.1.2,Ruby gem,embedded ruby,acc-debian12
+plugin asset acc-visibility-modules,"21 files, 184 KB",plugin content (from the instance),agent cache,acc-debian12
+plugin asset acc-f-commons,"77 files, 608 KB",plugin content (from the instance),agent cache,acc-debian12
+plugin asset osquery,"1 files, 85152 KB",plugin content (from the instance),agent cache,acc-debian12
+plugin asset acc-visibility-modules-common,"45 files, 408 KB",plugin content (from the instance),agent cache,acc-debian12
+plugin asset acc-f-modules,"7 files, 76 KB",plugin content (from the instance),agent cache,acc-debian12
+plugin asset acctest-scripts,"4 files, 28 KB",plugin content (from the instance),agent cache,acc-debian12
+Agent Client Collector,"acc version 7.1.3, build dd94c9bd05a867348c700f5a8e65f4eb1112e8c0, built 2026-11-04T01:06:41Z",agent,7.1.3-1,acc-rocky9
+Go runtime (acc binary),go1.26.10,compiler/runtime,bin/acc,acc-rocky9
+Ruby (embedded),ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux],interpreter,embedded/bin/ruby,acc-rocky9
+OpenSSL (embedded),OpenSSL 3.5.9 29 Sep 2026,crypto library,embedded/lib,acc-rocky9
+osquery (plugin asset),osqueryi version 5.18.1,tool (from the instance),agent cache,acc-rocky9
+libcrypto.so.3,,shared library,embedded/lib,acc-rocky9
+libcrypt.so.1,,shared library,embedded/lib,acc-rocky9
+libcrypt.so.1.1.0,,shared library,embedded/lib,acc-rocky9
+libffi.so.8,,shared library,embedded/lib,acc-rocky9
+libffi.so.8.1.2,,shared library,embedded/lib,acc-rocky9
+libowcrypt.so.1,,shared library,embedded/lib,acc-rocky9
+libruby.so.3.3,,shared library,embedded/lib,acc-rocky9
+libruby.so.3.3.13,,shared library,embedded/lib,acc-rocky9
+libssl.so.3,,shared library,embedded/lib,acc-rocky9
+libyaml-0.so.2,,shared library,embedded/lib,acc-rocky9
+libyaml-0.so.2.0.9,,shared library,embedded/lib,acc-rocky9
+libz.so.1,,shared library,embedded/lib,acc-rocky9
+libz.so.1.2.13,,shared library,embedded/lib,acc-rocky9
+gem abbrev,0.1.2,Ruby gem,embedded ruby,acc-rocky9
+gem addressable,2.9.0,Ruby gem,embedded ruby,acc-rocky9
+gem base64,0.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem benchmark,0.3.0,Ruby gem,embedded ruby,acc-rocky9
+gem bigdecimal,3.1.5,Ruby gem,embedded ruby,acc-rocky9
+gem bundler,2.5.22,Ruby gem,embedded ruby,acc-rocky9
+gem cgi,0.5.0,Ruby gem,embedded ruby,acc-rocky9
+gem csv,3.2.8,Ruby gem,embedded ruby,acc-rocky9
+gem date,3.3.4,Ruby gem,embedded ruby,acc-rocky9
+gem debug,1.9.2,Ruby gem,embedded ruby,acc-rocky9
+gem delegate,0.3.1,Ruby gem,embedded ruby,acc-rocky9
+gem did_you_mean,1.6.3,Ruby gem,embedded ruby,acc-rocky9
+gem digest,3.1.1,Ruby gem,embedded ruby,acc-rocky9
+gem drb,2.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem english,0.8.0,Ruby gem,embedded ruby,acc-rocky9
+gem erb,4.0.3.1,Ruby gem,embedded ruby,acc-rocky9
+gem error_highlight,0.6.0,Ruby gem,embedded ruby,acc-rocky9
+gem etc,1.4.3,Ruby gem,embedded ruby,acc-rocky9
+gem fcntl,1.1.0,Ruby gem,embedded ruby,acc-rocky9
+gem ffi,1.17.0 x86_64-linux-gnu,Ruby gem,embedded ruby,acc-rocky9
+gem ffi-compiler,1.4.2,Ruby gem,embedded ruby,acc-rocky9
+gem fiddle,1.1.2,Ruby gem,embedded ruby,acc-rocky9
+gem fileutils,1.7.2,Ruby gem,embedded ruby,acc-rocky9
+gem find,0.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem forwardable,1.3.3,Ruby gem,embedded ruby,acc-rocky9
+gem getoptlong,0.2.1,Ruby gem,embedded ruby,acc-rocky9
+gem io-nonblock,0.3.0,Ruby gem,embedded ruby,acc-rocky9
+gem io-wait,0.3.1,Ruby gem,embedded ruby,acc-rocky9
+gem ipaddr,1.2.6,Ruby gem,embedded ruby,acc-rocky9
+gem irb,1.13.1,Ruby gem,embedded ruby,acc-rocky9
+gem json,"2.7.2, 2.7.1",Ruby gem,embedded ruby,acc-rocky9
+gem llhttp-ffi,0.5.0,Ruby gem,embedded ruby,acc-rocky9
+gem logger,1.6.0,Ruby gem,embedded ruby,acc-rocky9
+gem matrix,0.4.2,Ruby gem,embedded ruby,acc-rocky9
+gem minitest,5.20.0,Ruby gem,embedded ruby,acc-rocky9
+gem mixlib-cli,1.7.0,Ruby gem,embedded ruby,acc-rocky9
+gem mutex_m,0.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem net-ftp,0.3.4,Ruby gem,embedded ruby,acc-rocky9
+gem net-http,0.4.1,Ruby gem,embedded ruby,acc-rocky9
+gem net-imap,0.5.15,Ruby gem,embedded ruby,acc-rocky9
+gem net-pop,0.1.2,Ruby gem,embedded ruby,acc-rocky9
+gem net-protocol,0.2.2,Ruby gem,embedded ruby,acc-rocky9
+gem net-smtp,0.5.1,Ruby gem,embedded ruby,acc-rocky9
+gem nkf,0.1.3,Ruby gem,embedded ruby,acc-rocky9
+gem observer,0.1.2,Ruby gem,embedded ruby,acc-rocky9
+gem open-uri,0.4.1,Ruby gem,embedded ruby,acc-rocky9
+gem open3,0.2.1,Ruby gem,embedded ruby,acc-rocky9
+gem openssl,3.2.4,Ruby gem,embedded ruby,acc-rocky9
+gem optparse,0.4.0,Ruby gem,embedded ruby,acc-rocky9
+gem ostruct,0.6.0,Ruby gem,embedded ruby,acc-rocky9
+gem pathname,0.3.0,Ruby gem,embedded ruby,acc-rocky9
+gem power_assert,2.0.3,Ruby gem,embedded ruby,acc-rocky9
+gem pp,0.5.0,Ruby gem,embedded ruby,acc-rocky9
+gem prettyprint,0.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem prime,0.1.2,Ruby gem,embedded ruby,acc-rocky9
+gem prism,0.19.0,Ruby gem,embedded ruby,acc-rocky9
+gem pstore,0.2.1,Ruby gem,embedded ruby,acc-rocky9
+gem psych,5.1.2,Ruby gem,embedded ruby,acc-rocky9
+gem public_suffix,7.0.5,Ruby gem,embedded ruby,acc-rocky9
+gem racc,1.7.3,Ruby gem,embedded ruby,acc-rocky9
+gem rake,13.1.0,Ruby gem,embedded ruby,acc-rocky9
+gem rb-readline,0.5.5,Ruby gem,embedded ruby,acc-rocky9
+gem rbs,3.5.0,Ruby gem,embedded ruby,acc-rocky9
+gem rdoc,6.6.3.1,Ruby gem,embedded ruby,acc-rocky9
+gem readline,0.0.4,Ruby gem,embedded ruby,acc-rocky9
+gem reline,0.5.10,Ruby gem,embedded ruby,acc-rocky9
+gem resolv,0.3.2,Ruby gem,embedded ruby,acc-rocky9
+gem rexml,3.4.4,Ruby gem,embedded ruby,acc-rocky9
+gem rinda,0.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem rss,0.3.1,Ruby gem,embedded ruby,acc-rocky9
+gem ruby2_keywords,0.0.5,Ruby gem,embedded ruby,acc-rocky9
+gem securerandom,0.3.1,Ruby gem,embedded ruby,acc-rocky9
+gem sensu-plugin,4.0.0,Ruby gem,embedded ruby,acc-rocky9
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded ruby,acc-rocky9
+gem set,1.1.0,Ruby gem,embedded ruby,acc-rocky9
+gem shellwords,0.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem singleton,0.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem stringio,3.1.1,Ruby gem,embedded ruby,acc-rocky9
+gem strscan,3.0.9,Ruby gem,embedded ruby,acc-rocky9
+gem syntax_suggest,2.0.3,Ruby gem,embedded ruby,acc-rocky9
+gem syslog,0.1.2,Ruby gem,embedded ruby,acc-rocky9
+gem tempfile,0.2.1,Ruby gem,embedded ruby,acc-rocky9
+gem test-unit,3.6.1,Ruby gem,embedded ruby,acc-rocky9
+gem time,0.3.0,Ruby gem,embedded ruby,acc-rocky9
+gem timeout,0.4.1,Ruby gem,embedded ruby,acc-rocky9
+gem tmpdir,0.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem tsort,0.2.0,Ruby gem,embedded ruby,acc-rocky9
+gem typeprof,0.21.9,Ruby gem,embedded ruby,acc-rocky9
+gem un,0.3.0,Ruby gem,embedded ruby,acc-rocky9
+gem uri,0.13.3,Ruby gem,embedded ruby,acc-rocky9
+gem weakref,0.1.3,Ruby gem,embedded ruby,acc-rocky9
+gem win32ole,1.8.10,Ruby gem,embedded ruby,acc-rocky9
+gem yaml,0.3.0,Ruby gem,embedded ruby,acc-rocky9
+gem zlib,3.1.2,Ruby gem,embedded ruby,acc-rocky9
+plugin asset osquery,"1 files, 85152 KB",plugin content (from the instance),agent cache,acc-rocky9
+plugin asset acc-visibility-modules,"21 files, 184 KB",plugin content (from the instance),agent cache,acc-rocky9
+plugin asset acctest-scripts,"4 files, 28 KB",plugin content (from the instance),agent cache,acc-rocky9
+plugin asset acc-visibility-modules-common,"45 files, 408 KB",plugin content (from the instance),agent cache,acc-rocky9
+plugin asset acc-f-modules,"7 files, 76 KB",plugin content (from the instance),agent cache,acc-rocky9
+plugin asset acc-f-commons,"77 files, 608 KB",plugin content (from the instance),agent cache,acc-rocky9
+Agent Client Collector,"acc version 7.1.3, build dd94c9bd05a867348c700f5a8e65f4eb1112e8c0, built 2026-11-04T01:06:41Z",agent,7.1.3-1,acc-rocky10
+Go runtime (acc binary),go1.26.10,compiler/runtime,bin/acc,acc-rocky10
+Ruby (embedded),ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux],interpreter,embedded/bin/ruby,acc-rocky10
+OpenSSL (embedded),OpenSSL 3.5.9 29 Sep 2026,crypto library,embedded/lib,acc-rocky10
+osquery (plugin asset),osqueryi version 5.18.1,tool (from the instance),agent cache,acc-rocky10
+libcrypto.so.3,,shared library,embedded/lib,acc-rocky10
+libcrypt.so.1,,shared library,embedded/lib,acc-rocky10
+libcrypt.so.1.1.0,,shared library,embedded/lib,acc-rocky10
+libffi.so.8,,shared library,embedded/lib,acc-rocky10
+libffi.so.8.1.2,,shared library,embedded/lib,acc-rocky10
+libowcrypt.so.1,,shared library,embedded/lib,acc-rocky10
+libruby.so.3.3,,shared library,embedded/lib,acc-rocky10
+libruby.so.3.3.13,,shared library,embedded/lib,acc-rocky10
+libssl.so.3,,shared library,embedded/lib,acc-rocky10
+libyaml-0.so.2,,shared library,embedded/lib,acc-rocky10
+libyaml-0.so.2.0.9,,shared library,embedded/lib,acc-rocky10
+libz.so.1,,shared library,embedded/lib,acc-rocky10
+libz.so.1.2.13,,shared library,embedded/lib,acc-rocky10
+gem abbrev,0.1.2,Ruby gem,embedded ruby,acc-rocky10
+gem addressable,2.9.0,Ruby gem,embedded ruby,acc-rocky10
+gem base64,0.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem benchmark,0.3.0,Ruby gem,embedded ruby,acc-rocky10
+gem bigdecimal,3.1.5,Ruby gem,embedded ruby,acc-rocky10
+gem bundler,2.5.22,Ruby gem,embedded ruby,acc-rocky10
+gem cgi,0.5.0,Ruby gem,embedded ruby,acc-rocky10
+gem csv,3.2.8,Ruby gem,embedded ruby,acc-rocky10
+gem date,3.3.4,Ruby gem,embedded ruby,acc-rocky10
+gem debug,1.9.2,Ruby gem,embedded ruby,acc-rocky10
+gem delegate,0.3.1,Ruby gem,embedded ruby,acc-rocky10
+gem did_you_mean,1.6.3,Ruby gem,embedded ruby,acc-rocky10
+gem digest,3.1.1,Ruby gem,embedded ruby,acc-rocky10
+gem drb,2.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem english,0.8.0,Ruby gem,embedded ruby,acc-rocky10
+gem erb,4.0.3.1,Ruby gem,embedded ruby,acc-rocky10
+gem error_highlight,0.6.0,Ruby gem,embedded ruby,acc-rocky10
+gem etc,1.4.3,Ruby gem,embedded ruby,acc-rocky10
+gem fcntl,1.1.0,Ruby gem,embedded ruby,acc-rocky10
+gem ffi,1.17.0 x86_64-linux-gnu,Ruby gem,embedded ruby,acc-rocky10
+gem ffi-compiler,1.4.2,Ruby gem,embedded ruby,acc-rocky10
+gem fiddle,1.1.2,Ruby gem,embedded ruby,acc-rocky10
+gem fileutils,1.7.2,Ruby gem,embedded ruby,acc-rocky10
+gem find,0.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem forwardable,1.3.3,Ruby gem,embedded ruby,acc-rocky10
+gem getoptlong,0.2.1,Ruby gem,embedded ruby,acc-rocky10
+gem io-nonblock,0.3.0,Ruby gem,embedded ruby,acc-rocky10
+gem io-wait,0.3.1,Ruby gem,embedded ruby,acc-rocky10
+gem ipaddr,1.2.6,Ruby gem,embedded ruby,acc-rocky10
+gem irb,1.13.1,Ruby gem,embedded ruby,acc-rocky10
+gem json,"2.7.2, 2.7.1",Ruby gem,embedded ruby,acc-rocky10
+gem llhttp-ffi,0.5.0,Ruby gem,embedded ruby,acc-rocky10
+gem logger,1.6.0,Ruby gem,embedded ruby,acc-rocky10
+gem matrix,0.4.2,Ruby gem,embedded ruby,acc-rocky10
+gem minitest,5.20.0,Ruby gem,embedded ruby,acc-rocky10
+gem mixlib-cli,1.7.0,Ruby gem,embedded ruby,acc-rocky10
+gem mutex_m,0.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem net-ftp,0.3.4,Ruby gem,embedded ruby,acc-rocky10
+gem net-http,0.4.1,Ruby gem,embedded ruby,acc-rocky10
+gem net-imap,0.5.15,Ruby gem,embedded ruby,acc-rocky10
+gem net-pop,0.1.2,Ruby gem,embedded ruby,acc-rocky10
+gem net-protocol,0.2.2,Ruby gem,embedded ruby,acc-rocky10
+gem net-smtp,0.5.1,Ruby gem,embedded ruby,acc-rocky10
+gem nkf,0.1.3,Ruby gem,embedded ruby,acc-rocky10
+gem observer,0.1.2,Ruby gem,embedded ruby,acc-rocky10
+gem open-uri,0.4.1,Ruby gem,embedded ruby,acc-rocky10
+gem open3,0.2.1,Ruby gem,embedded ruby,acc-rocky10
+gem openssl,3.2.4,Ruby gem,embedded ruby,acc-rocky10
+gem optparse,0.4.0,Ruby gem,embedded ruby,acc-rocky10
+gem ostruct,0.6.0,Ruby gem,embedded ruby,acc-rocky10
+gem pathname,0.3.0,Ruby gem,embedded ruby,acc-rocky10
+gem power_assert,2.0.3,Ruby gem,embedded ruby,acc-rocky10
+gem pp,0.5.0,Ruby gem,embedded ruby,acc-rocky10
+gem prettyprint,0.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem prime,0.1.2,Ruby gem,embedded ruby,acc-rocky10
+gem prism,0.19.0,Ruby gem,embedded ruby,acc-rocky10
+gem pstore,0.2.1,Ruby gem,embedded ruby,acc-rocky10
+gem psych,5.1.2,Ruby gem,embedded ruby,acc-rocky10
+gem public_suffix,7.0.5,Ruby gem,embedded ruby,acc-rocky10
+gem racc,1.7.3,Ruby gem,embedded ruby,acc-rocky10
+gem rake,13.1.0,Ruby gem,embedded ruby,acc-rocky10
+gem rb-readline,0.5.5,Ruby gem,embedded ruby,acc-rocky10
+gem rbs,3.5.0,Ruby gem,embedded ruby,acc-rocky10
+gem rdoc,6.6.3.1,Ruby gem,embedded ruby,acc-rocky10
+gem readline,0.0.4,Ruby gem,embedded ruby,acc-rocky10
+gem reline,0.5.10,Ruby gem,embedded ruby,acc-rocky10
+gem resolv,0.3.2,Ruby gem,embedded ruby,acc-rocky10
+gem rexml,3.4.4,Ruby gem,embedded ruby,acc-rocky10
+gem rinda,0.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem rss,0.3.1,Ruby gem,embedded ruby,acc-rocky10
+gem ruby2_keywords,0.0.5,Ruby gem,embedded ruby,acc-rocky10
+gem securerandom,0.3.1,Ruby gem,embedded ruby,acc-rocky10
+gem sensu-plugin,4.0.0,Ruby gem,embedded ruby,acc-rocky10
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded ruby,acc-rocky10
+gem set,1.1.0,Ruby gem,embedded ruby,acc-rocky10
+gem shellwords,0.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem singleton,0.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem stringio,3.1.1,Ruby gem,embedded ruby,acc-rocky10
+gem strscan,3.0.9,Ruby gem,embedded ruby,acc-rocky10
+gem syntax_suggest,2.0.3,Ruby gem,embedded ruby,acc-rocky10
+gem syslog,0.1.2,Ruby gem,embedded ruby,acc-rocky10
+gem tempfile,0.2.1,Ruby gem,embedded ruby,acc-rocky10
+gem test-unit,3.6.1,Ruby gem,embedded ruby,acc-rocky10
+gem time,0.3.0,Ruby gem,embedded ruby,acc-rocky10
+gem timeout,0.4.1,Ruby gem,embedded ruby,acc-rocky10
+gem tmpdir,0.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem tsort,0.2.0,Ruby gem,embedded ruby,acc-rocky10
+gem typeprof,0.21.9,Ruby gem,embedded ruby,acc-rocky10
+gem un,0.3.0,Ruby gem,embedded ruby,acc-rocky10
+gem uri,0.13.3,Ruby gem,embedded ruby,acc-rocky10
+gem weakref,0.1.3,Ruby gem,embedded ruby,acc-rocky10
+gem win32ole,1.8.10,Ruby gem,embedded ruby,acc-rocky10
+gem yaml,0.3.0,Ruby gem,embedded ruby,acc-rocky10
+gem zlib,3.1.2,Ruby gem,embedded ruby,acc-rocky10
+plugin asset acc-visibility-modules,"21 files, 184 KB",plugin content (from the instance),agent cache,acc-rocky10
+plugin asset acc-f-commons,"77 files, 608 KB",plugin content (from the instance),agent cache,acc-rocky10
+plugin asset acc-visibility-modules-common,"45 files, 408 KB",plugin content (from the instance),agent cache,acc-rocky10
+plugin asset acctest-scripts,"4 files, 28 KB",plugin content (from the instance),agent cache,acc-rocky10
+plugin asset acc-f-modules,"7 files, 76 KB",plugin content (from the instance),agent cache,acc-rocky10
+plugin asset osquery,"1 files, 85152 KB",plugin content (from the instance),agent cache,acc-rocky10
+Agent Client Collector,"acc version 7.1.3, build dd94c9bd05a867348c700f5a8e65f4eb1112e8c0, built 2026-11-04T01:06:41Z",agent,7.1.3-1,acc-suse156
+Go runtime (acc binary),go1.26.10,compiler/runtime,bin/acc,acc-suse156
+Ruby (embedded),ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux],interpreter,embedded/bin/ruby,acc-suse156
+OpenSSL (embedded),OpenSSL 3.5.9 29 Sep 2026,crypto library,embedded/lib,acc-suse156
+osquery (plugin asset),osqueryi version 5.18.1,tool (from the instance),agent cache,acc-suse156
+libcrypto.so.3,,shared library,embedded/lib,acc-suse156
+libcrypt.so.1,,shared library,embedded/lib,acc-suse156
+libcrypt.so.1.1.0,,shared library,embedded/lib,acc-suse156
+libffi.so.8,,shared library,embedded/lib,acc-suse156
+libffi.so.8.1.2,,shared library,embedded/lib,acc-suse156
+libowcrypt.so.1,,shared library,embedded/lib,acc-suse156
+libruby.so.3.3,,shared library,embedded/lib,acc-suse156
+libruby.so.3.3.13,,shared library,embedded/lib,acc-suse156
+libssl.so.3,,shared library,embedded/lib,acc-suse156
+libyaml-0.so.2,,shared library,embedded/lib,acc-suse156
+libyaml-0.so.2.0.9,,shared library,embedded/lib,acc-suse156
+libz.so.1,,shared library,embedded/lib,acc-suse156
+libz.so.1.2.13,,shared library,embedded/lib,acc-suse156
+gem abbrev,0.1.2,Ruby gem,embedded ruby,acc-suse156
+gem addressable,2.9.0,Ruby gem,embedded ruby,acc-suse156
+gem base64,0.2.0,Ruby gem,embedded ruby,acc-suse156
+gem benchmark,0.3.0,Ruby gem,embedded ruby,acc-suse156
+gem bigdecimal,3.1.5,Ruby gem,embedded ruby,acc-suse156
+gem bundler,2.5.22,Ruby gem,embedded ruby,acc-suse156
+gem cgi,0.5.0,Ruby gem,embedded ruby,acc-suse156
+gem csv,3.2.8,Ruby gem,embedded ruby,acc-suse156
+gem date,3.3.4,Ruby gem,embedded ruby,acc-suse156
+gem debug,1.9.2,Ruby gem,embedded ruby,acc-suse156
+gem delegate,0.3.1,Ruby gem,embedded ruby,acc-suse156
+gem did_you_mean,1.6.3,Ruby gem,embedded ruby,acc-suse156
+gem digest,3.1.1,Ruby gem,embedded ruby,acc-suse156
+gem drb,2.2.0,Ruby gem,embedded ruby,acc-suse156
+gem english,0.8.0,Ruby gem,embedded ruby,acc-suse156
+gem erb,4.0.3.1,Ruby gem,embedded ruby,acc-suse156
+gem error_highlight,0.6.0,Ruby gem,embedded ruby,acc-suse156
+gem etc,1.4.3,Ruby gem,embedded ruby,acc-suse156
+gem fcntl,1.1.0,Ruby gem,embedded ruby,acc-suse156
+gem ffi,1.17.0 x86_64-linux-gnu,Ruby gem,embedded ruby,acc-suse156
+gem ffi-compiler,1.4.2,Ruby gem,embedded ruby,acc-suse156
+gem fiddle,1.1.2,Ruby gem,embedded ruby,acc-suse156
+gem fileutils,1.7.2,Ruby gem,embedded ruby,acc-suse156
+gem find,0.2.0,Ruby gem,embedded ruby,acc-suse156
+gem forwardable,1.3.3,Ruby gem,embedded ruby,acc-suse156
+gem getoptlong,0.2.1,Ruby gem,embedded ruby,acc-suse156
+gem io-nonblock,0.3.0,Ruby gem,embedded ruby,acc-suse156
+gem io-wait,0.3.1,Ruby gem,embedded ruby,acc-suse156
+gem ipaddr,1.2.6,Ruby gem,embedded ruby,acc-suse156
+gem irb,1.13.1,Ruby gem,embedded ruby,acc-suse156
+gem json,"2.7.2, 2.7.1",Ruby gem,embedded ruby,acc-suse156
+gem llhttp-ffi,0.5.0,Ruby gem,embedded ruby,acc-suse156
+gem logger,1.6.0,Ruby gem,embedded ruby,acc-suse156
+gem matrix,0.4.2,Ruby gem,embedded ruby,acc-suse156
+gem minitest,5.20.0,Ruby gem,embedded ruby,acc-suse156
+gem mixlib-cli,1.7.0,Ruby gem,embedded ruby,acc-suse156
+gem mutex_m,0.2.0,Ruby gem,embedded ruby,acc-suse156
+gem net-ftp,0.3.4,Ruby gem,embedded ruby,acc-suse156
+gem net-http,0.4.1,Ruby gem,embedded ruby,acc-suse156
+gem net-imap,0.5.15,Ruby gem,embedded ruby,acc-suse156
+gem net-pop,0.1.2,Ruby gem,embedded ruby,acc-suse156
+gem net-protocol,0.2.2,Ruby gem,embedded ruby,acc-suse156
+gem net-smtp,0.5.1,Ruby gem,embedded ruby,acc-suse156
+gem nkf,0.1.3,Ruby gem,embedded ruby,acc-suse156
+gem observer,0.1.2,Ruby gem,embedded ruby,acc-suse156
+gem open-uri,0.4.1,Ruby gem,embedded ruby,acc-suse156
+gem open3,0.2.1,Ruby gem,embedded ruby,acc-suse156
+gem openssl,3.2.4,Ruby gem,embedded ruby,acc-suse156
+gem optparse,0.4.0,Ruby gem,embedded ruby,acc-suse156
+gem ostruct,0.6.0,Ruby gem,embedded ruby,acc-suse156
+gem pathname,0.3.0,Ruby gem,embedded ruby,acc-suse156
+gem power_assert,2.0.3,Ruby gem,embedded ruby,acc-suse156
+gem pp,0.5.0,Ruby gem,embedded ruby,acc-suse156
+gem prettyprint,0.2.0,Ruby gem,embedded ruby,acc-suse156
+gem prime,0.1.2,Ruby gem,embedded ruby,acc-suse156
+gem prism,0.19.0,Ruby gem,embedded ruby,acc-suse156
+gem pstore,0.2.1,Ruby gem,embedded ruby,acc-suse156
+gem psych,5.1.2,Ruby gem,embedded ruby,acc-suse156
+gem public_suffix,7.0.5,Ruby gem,embedded ruby,acc-suse156
+gem racc,1.7.3,Ruby gem,embedded ruby,acc-suse156
+gem rake,13.1.0,Ruby gem,embedded ruby,acc-suse156
+gem rb-readline,0.5.5,Ruby gem,embedded ruby,acc-suse156
+gem rbs,3.5.0,Ruby gem,embedded ruby,acc-suse156
+gem rdoc,6.6.3.1,Ruby gem,embedded ruby,acc-suse156
+gem readline,0.0.4,Ruby gem,embedded ruby,acc-suse156
+gem reline,0.5.10,Ruby gem,embedded ruby,acc-suse156
+gem resolv,0.3.2,Ruby gem,embedded ruby,acc-suse156
+gem rexml,3.4.4,Ruby gem,embedded ruby,acc-suse156
+gem rinda,0.2.0,Ruby gem,embedded ruby,acc-suse156
+gem rss,0.3.1,Ruby gem,embedded ruby,acc-suse156
+gem ruby2_keywords,0.0.5,Ruby gem,embedded ruby,acc-suse156
+gem securerandom,0.3.1,Ruby gem,embedded ruby,acc-suse156
+gem sensu-plugin,4.0.0,Ruby gem,embedded ruby,acc-suse156
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded ruby,acc-suse156
+gem set,1.1.0,Ruby gem,embedded ruby,acc-suse156
+gem shellwords,0.2.0,Ruby gem,embedded ruby,acc-suse156
+gem singleton,0.2.0,Ruby gem,embedded ruby,acc-suse156
+gem stringio,3.1.1,Ruby gem,embedded ruby,acc-suse156
+gem strscan,3.0.9,Ruby gem,embedded ruby,acc-suse156
+gem syntax_suggest,2.0.3,Ruby gem,embedded ruby,acc-suse156
+gem syslog,0.1.2,Ruby gem,embedded ruby,acc-suse156
+gem tempfile,0.2.1,Ruby gem,embedded ruby,acc-suse156
+gem test-unit,3.6.1,Ruby gem,embedded ruby,acc-suse156
+gem time,0.3.0,Ruby gem,embedded ruby,acc-suse156
+gem timeout,0.4.1,Ruby gem,embedded ruby,acc-suse156
+gem tmpdir,0.2.0,Ruby gem,embedded ruby,acc-suse156
+gem tsort,0.2.0,Ruby gem,embedded ruby,acc-suse156
+gem typeprof,0.21.9,Ruby gem,embedded ruby,acc-suse156
+gem un,0.3.0,Ruby gem,embedded ruby,acc-suse156
+gem uri,0.13.3,Ruby gem,embedded ruby,acc-suse156
+gem weakref,0.1.3,Ruby gem,embedded ruby,acc-suse156
+gem win32ole,1.8.10,Ruby gem,embedded ruby,acc-suse156
+gem yaml,0.3.0,Ruby gem,embedded ruby,acc-suse156
+gem zlib,3.1.2,Ruby gem,embedded ruby,acc-suse156
+plugin asset acctest-scripts,"4 files, 28 KB",plugin content (from the instance),agent cache,acc-suse156
+plugin asset acc-f-commons,"77 files, 608 KB",plugin content (from the instance),agent cache,acc-suse156
+plugin asset acc-visibility-modules-common,"45 files, 408 KB",plugin content (from the instance),agent cache,acc-suse156
+plugin asset acc-f-modules,"7 files, 76 KB",plugin content (from the instance),agent cache,acc-suse156
+plugin asset acc-visibility-modules,"21 files, 184 KB",plugin content (from the instance),agent cache,acc-suse156
+plugin asset osquery,"1 files, 85152 KB",plugin content (from the instance),agent cache,acc-suse156
+Agent Client Collector,"acc version 7.1.3, build dd94c9bd05a867348c700f5a8e65f4eb1112e8c0, built 2026-11-03T23:12:20Z",agent,7.1.3.3,acc-win2025
+Go runtime (acc binary),go1.26.10,compiler/runtime,bin/acc,acc-win2025
+Ruby (embedded),ruby 3.3.13 (2026-10-23 revision af48f08f21) [x64-mingw32ucrt],interpreter,embedded/bin/ruby,acc-win2025
+OpenSSL (embedded),OpenSSL 3.5.9 29 Sep 2026,crypto library,embedded/lib,acc-win2025
+osquery (plugin asset),osqueryi.exe version 5.18.1,tool (from the instance),agent cache,acc-win2025
+libcrypto-3-x64.dll,3.5.9,shared library,embedded/lib,acc-win2025
+libssl-3-x64.dll,3.5.9,shared library,embedded/lib,acc-win2025
+libffi-8.dll,,shared library,embedded/lib,acc-win2025
+libgcc_s_seh-1.dll,,shared library,embedded/lib,acc-win2025
+libstdc++-6.dll,,shared library,embedded/lib,acc-win2025
+libwinpthread-1.dll,"1, 0, 0, 0",shared library,embedded/lib,acc-win2025
+libyaml-0-2.dll,,shared library,embedded/lib,acc-win2025
+x64-ucrt-ruby330.dll,3.3.13p207,shared library,embedded/lib,acc-win2025
+zlib1.dll,1.2.13,shared library,embedded/lib,acc-win2025
+gem abbrev,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem addressable,2.9.0,Ruby gem,embedded ruby,acc-win2025
+gem base64,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem benchmark,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem bigdecimal,3.1.5,Ruby gem,embedded ruby,acc-win2025
+gem bundler,2.5.22,Ruby gem,embedded ruby,acc-win2025
+gem cgi,0.5.0,Ruby gem,embedded ruby,acc-win2025
+gem csv,3.2.8,Ruby gem,embedded ruby,acc-win2025
+gem date,3.3.4,Ruby gem,embedded ruby,acc-win2025
+gem debug,1.9.2,Ruby gem,embedded ruby,acc-win2025
+gem delegate,0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem did_you_mean,1.6.3,Ruby gem,embedded ruby,acc-win2025
+gem digest,3.1.1,Ruby gem,embedded ruby,acc-win2025
+gem drb,2.2.0,Ruby gem,embedded ruby,acc-win2025
+gem english,0.8.0,Ruby gem,embedded ruby,acc-win2025
+gem erb,4.0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem error_highlight,0.6.0,Ruby gem,embedded ruby,acc-win2025
+gem etc,1.4.3,Ruby gem,embedded ruby,acc-win2025
+gem fcntl,1.1.0,Ruby gem,embedded ruby,acc-win2025
+gem ffi,1.17.0,Ruby gem,embedded ruby,acc-win2025
+gem ffi-compiler,1.4.3,Ruby gem,embedded ruby,acc-win2025
+gem ffi-win32-extensions,1.1.0,Ruby gem,embedded ruby,acc-win2025
+gem fiddle,1.1.2,Ruby gem,embedded ruby,acc-win2025
+gem fileutils,1.7.2,Ruby gem,embedded ruby,acc-win2025
+gem find,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem forwardable,1.3.3,Ruby gem,embedded ruby,acc-win2025
+gem getoptlong,0.2.1,Ruby gem,embedded ruby,acc-win2025
+gem io-nonblock,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem io-wait,0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem ipaddr,1.2.6,Ruby gem,embedded ruby,acc-win2025
+gem irb,1.13.1,Ruby gem,embedded ruby,acc-win2025
+gem json,"2.7.2, 2.7.1",Ruby gem,embedded ruby,acc-win2025
+gem llhttp-ffi,0.5.0,Ruby gem,embedded ruby,acc-win2025
+gem logger,1.6.0,Ruby gem,embedded ruby,acc-win2025
+gem matrix,0.4.2,Ruby gem,embedded ruby,acc-win2025
+gem minitest,5.20.0,Ruby gem,embedded ruby,acc-win2025
+gem mixlib-cli,1.7.0,Ruby gem,embedded ruby,acc-win2025
+gem mutex_m,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem net-ftp,0.3.4,Ruby gem,embedded ruby,acc-win2025
+gem net-http,0.4.1,Ruby gem,embedded ruby,acc-win2025
+gem net-imap,0.5.15,Ruby gem,embedded ruby,acc-win2025
+gem net-pop,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem net-protocol,0.2.2,Ruby gem,embedded ruby,acc-win2025
+gem net-smtp,0.5.1,Ruby gem,embedded ruby,acc-win2025
+gem nkf,0.1.3,Ruby gem,embedded ruby,acc-win2025
+gem observer,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem open-uri,0.4.1,Ruby gem,embedded ruby,acc-win2025
+gem open3,0.2.1,Ruby gem,embedded ruby,acc-win2025
+gem openssl,3.2.4,Ruby gem,embedded ruby,acc-win2025
+gem optparse,0.4.0,Ruby gem,embedded ruby,acc-win2025
+gem ostruct,0.6.0,Ruby gem,embedded ruby,acc-win2025
+gem pathname,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem power_assert,2.0.3,Ruby gem,embedded ruby,acc-win2025
+gem pp,0.5.0,Ruby gem,embedded ruby,acc-win2025
+gem prettyprint,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem prime,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem prism,0.19.0,Ruby gem,embedded ruby,acc-win2025
+gem pstore,0.2.1,Ruby gem,embedded ruby,acc-win2025
+gem psych,5.1.2,Ruby gem,embedded ruby,acc-win2025
+gem public_suffix,7.0.5,Ruby gem,embedded ruby,acc-win2025
+gem racc,1.7.3,Ruby gem,embedded ruby,acc-win2025
+gem rake,13.1.0,Ruby gem,embedded ruby,acc-win2025
+gem rb-readline,0.5.5,Ruby gem,embedded ruby,acc-win2025
+gem rbs,3.5.0,Ruby gem,embedded ruby,acc-win2025
+gem rdoc,6.6.3.1,Ruby gem,embedded ruby,acc-win2025
+gem readline,0.0.4,Ruby gem,embedded ruby,acc-win2025
+gem reline,0.5.10,Ruby gem,embedded ruby,acc-win2025
+gem resolv,0.3.2,Ruby gem,embedded ruby,acc-win2025
+gem rexml,3.4.4,Ruby gem,embedded ruby,acc-win2025
+gem rinda,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem rss,0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem ruby2_keywords,0.0.5,Ruby gem,embedded ruby,acc-win2025
+gem securerandom,0.3.1,Ruby gem,embedded ruby,acc-win2025
+gem sensu-plugin,4.0.0,Ruby gem,embedded ruby,acc-win2025
+gem sensu-sn-readfile,1.1.3,Ruby gem,embedded ruby,acc-win2025
+gem set,1.1.0,Ruby gem,embedded ruby,acc-win2025
+gem shellwords,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem singleton,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem stringio,3.1.1,Ruby gem,embedded ruby,acc-win2025
+gem strscan,3.0.9,Ruby gem,embedded ruby,acc-win2025
+gem syntax_suggest,2.0.3,Ruby gem,embedded ruby,acc-win2025
+gem syslog,0.1.2,Ruby gem,embedded ruby,acc-win2025
+gem tempfile,0.2.1,Ruby gem,embedded ruby,acc-win2025
+gem test-unit,3.6.1,Ruby gem,embedded ruby,acc-win2025
+gem time,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem timeout,0.4.1,Ruby gem,embedded ruby,acc-win2025
+gem tmpdir,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem tsort,0.2.0,Ruby gem,embedded ruby,acc-win2025
+gem typeprof,0.21.9,Ruby gem,embedded ruby,acc-win2025
+gem un,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem uri,0.13.3,Ruby gem,embedded ruby,acc-win2025
+gem weakref,0.1.3,Ruby gem,embedded ruby,acc-win2025
+gem win32-security,0.5.0,Ruby gem,embedded ruby,acc-win2025
+gem win32ole,1.8.10,Ruby gem,embedded ruby,acc-win2025
+gem yaml,0.3.0,Ruby gem,embedded ruby,acc-win2025
+gem zlib,3.1.2,Ruby gem,embedded ruby,acc-win2025
+plugin asset acc-f-commons,77 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset acc-f-modules,6 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset acc-visibility-modules,41 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset acc-visibility-modules-common,45 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset acctest-scripts,4 files,plugin content (from the instance),agent cache,acc-win2025
+plugin asset osquery,1 files,plugin content (from the instance),agent cache,acc-win2025

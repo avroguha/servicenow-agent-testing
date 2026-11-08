@@ -19,7 +19,7 @@ release is safe for production:
 | Discovery | on-demand host data collection succeeds, a host CI of the right class is bound, name / IP / OS / related data populated |
 | Check definitions | every active definition that applies to the target's CI class is run ad hoc on the agent - out-of-box, customized and **custom** ones - and judged on whether the agent executed it (exit 0/1/2 with output = works; command errors, timeouts = fail). The agent self-test is run too |
 | Policies | every active published policy is evaluated against the host CI; matching ones must list the agent as a client and each of their check instances is tested on the agent |
-| Resources | CPU protection settings read from `acc.yml`; the agent process tree is sampled and must stay within `cpu_percentage_limit` (+ tolerance) |
+| Resources | CPU protection settings read from `acc.yml`; the agent process tree is sampled while idle and must stay within `cpu_percentage_limit` (+ tolerance); **performance metrics** (Linux): a sampler on the host records the agent tree's CPU, RSS, threads, fds, processes and disk I/O and the host's CPU busy %, load and memory through discovery, checks, policies and idle - the report shows them per phase and the working-vs-idle difference as the agent's impact on the host |
 | Cleanup | after discovery and checks: no child/zombie/osquery processes, no temp files, no panics, bounded disk footprint; optional uninstall must leave nothing behind |
 | UI | headless Chromium logs in and screenshots the agent form, the host CI and the test results (UI-only verification) |
 
@@ -29,6 +29,13 @@ each item, and for every failure exactly what failed with the evidence (command 
 
 Nothing in this repository is specific to one company or one lab. Everything environment-specific lives in two
 git-ignored files: `.env` (instance, MID, credentials, lab) and `targets.yml` (the servers).
+
+## Published results
+
+`results/` is git-ignored (it holds the lab's addresses and UI screenshots), so each qualification that is worth keeping is
+copied, sanitised, into `reports/<version>/` with a Markdown summary: **[reports/7.1.3/](reports/7.1.3/README.md)** -
+agent 7.1.3 on six Linux distributions and Windows Server 2025, verdict SAFE, with the component inventory for the
+security audit and the environment findings explained.
 
 ## Requirements
 
@@ -126,6 +133,32 @@ The report also carries the **component inventory** for the security team (`comp
 version, the Go toolchain, the embedded Ruby and OpenSSL, every shared library and gem the package ships, and the plugin
 assets and osquery version the instance delivered - read from the package before installing and again on every host
 after installing.
+
+### Performance metrics: what the agent costs the host
+
+On every Linux target a POSIX-sh sampler (`acctest/perf.py`, written to `/tmp/acctest-perf/` and removed afterwards) runs from
+the moment the agent is connected until the idle CPU sample is over. Every `PERF_STEP_S` seconds it records raw counters
+from `/proc`: host CPU ticks, load average, memory, and for the agent's whole process tree (`acc` plus the checks and
+osquery it spawns) CPU ticks, RSS, threads, open file descriptors, process count and bytes read / written. The runner
+marks the phase boundaries, so the **Performance** section of the report shows, per target and per phase (connect,
+discovery, checks, policies, inventory, idle, plus "all working phases" and "whole window"):
+
+| column | meaning |
+|---|---|
+| Agent CPU avg / peak | the agent tree, in % of one core |
+| Share of host | the same CPU as a fraction of all cores on the host |
+| Agent RSS avg / peak | resident memory of the tree, MB |
+| Procs / threads / fds | peak process count, threads and open descriptors of the tree |
+| Disk read / written | bytes the tree read from / wrote to block devices during the phase (needs root to read `/proc/<pid>/io`) |
+| Host CPU busy avg / peak | the whole machine, everything included |
+| Load1 max, Host memory used Δ | host load average peak and the change in used memory over the phase |
+
+The **impact** line under each table is the host's CPU busy % while the agent worked minus while it idled, and the agent
+tree's own average share of the host's capacity while working. The test row *Agent resource usage and host impact
+while working* is PASS or WARN only (the budget is yours): WARN when the agent's average CPU while working exceeds
+`PERF_CPU_AVG_WARN_PCT` (25% of one core), its RSS peak exceeds `PERF_RSS_PEAK_WARN_MB` (400 MB), or the host CPU busy
+increase exceeds `PERF_HOST_IMPACT_WARN_PCT` (10 points). Raw per-interval samples are written to `perf-<target>.csv`
+next to the report. Windows targets keep the 60-second idle CPU sample only for now.
 
 ### Which version fixes a Ruby / OpenSSL CVE?
 
