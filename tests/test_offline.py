@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from acctest import agents, checks, resources  # noqa: E402
+from acctest import agents, checks, downloads, resources  # noqa: E402
 from acctest.config import Settings, TargetSpec, load_targets, parse_env_file  # noqa: E402
 from acctest.report import render  # noqa: E402
 from acctest.results import FAIL, PASS, SKIP, WARN, RunResult, TestResult  # noqa: E402
@@ -459,6 +459,92 @@ class Runner(unittest.TestCase):
         log = "x [INFO] fine\ny [ERROR] [agent] error getting assets for check: could not validate downloaded asset acc-f-commons: hash of the file does not match expected hash abc\nz [INFO] later"
         self.assertIn("hash of the file does not match", discovery_failure_reason(log))
         self.assertEqual(discovery_failure_reason("only [INFO] lines"), "")
+
+
+class Downloads(unittest.TestCase):
+    """The download pages: rendered from a catalog dict, no network."""
+
+    @staticmethod
+    def catalog():
+        base = downloads.BASE_URL
+        files = []
+        for p in downloads.PACKAGES:
+            ok = p["classifier"] != "debian-8_amd64"
+            f = downloads.package_file("9.9.9", p)
+            files.append({"classifier": p["classifier"], "pkg": p["pkg"], "kind": "package", "file": f, "url": base + f,
+                          "available": ok, "status": 200 if ok else 404, "size": 50 << 20 if ok else 0,
+                          "last_modified": "Wed, 04 Nov 2026 06:44:39 GMT" if ok else "", "etag": ""})
+            s = downloads.signature_file("9.9.9", p)
+            if s:
+                files.append({"classifier": p["classifier"], "pkg": p["pkg"], "kind": "signature", "file": s, "url": base + s,
+                              "available": ok, "status": 200, "size": 1500, "last_modified": "Mon, 02 Nov 2026 06:44:39 GMT", "etag": ""})
+        files[0]["sha256"] = "ab" * 32
+        return {"base_url": base, "probed_at": "2026-11-11T18:00:00Z",
+                "versions": [{"version": "9.9.9", "last_modified": "Wed, 04 Nov 2026 06:44:39 GMT", "files": files},
+                             {"version": "9.10.0", "last_modified": "", "files": [dict(f, available=False, sha256=None, file=f["file"].replace("9.9.9", "9.10.0")) for f in files]}]}
+
+    def test_file_names_match_servicenow(self):
+        p = {x["classifier"]: x for x in downloads.PACKAGES}
+        self.assertEqual(downloads.package_file("7.1.3", p["macos_arm64"]), "agent-client-collector-7.1.3-macos_arm64.pkg")
+        self.assertEqual(downloads.package_file("7.1.3", p["ubuntu-2204_arm64"]), "agent-client-collector-7.1.3-ubuntu-2204_arm64.deb")
+        self.assertEqual(downloads.signature_file("7.1.3", p["x86_64"]), "agent-client-collector-7.1.3-x86_64-rpm-rpm.zip")
+        self.assertEqual(downloads.signature_file("7.1.3", p["windows-x64"]), "")
+        # every classifier the instance's OS map knows is covered, and every acctest os key maps to one package
+        self.assertEqual({x["classifier"] for x in downloads.PACKAGES},
+                         {"ubuntu-1804_amd64", "debian-9_amd64", "debian-8_amd64", "x86_64", "macos_x64", "windows-x64", "macos_arm64", "ubuntu-2204_arm64"})
+        self.assertEqual({x["os_key"] for x in downloads.PACKAGES if x["os_key"]}, set(agents.OS_KEYS))
+
+    def test_version_page_lists_every_os_with_links_and_gaps(self):
+        md = downloads.render_version(self.catalog()["versions"][0], downloads.BASE_URL)
+        self.assertIn("# Agent Client Collector 9.9.9 - downloads", md)
+        for p in downloads.PACKAGES:
+            self.assertIn(p["label"], md)
+        self.assertIn("](https://install.service-now.com/glide/distribution/builds/package/app-signed/agent-client-collector-9.9.9-macos_arm64.pkg)", md)
+        self.assertIn("agent-client-collector-9.9.9-ubuntu-2204_arm64-deb-deb.zip](", md)
+        self.assertIn("*not published for 9.9.9*", md)          # the Debian 8 build
+        self.assertIn("`" + "ab" * 32 + "`", md)                   # the one known sum
+        self.assertIn("download to verify", md)
+        self.assertIn("50.0 MB", md)
+        self.assertIn("2026-11-04", md)
+        self.assertIn("msiexec /i agent-client-collector-9.9.9-windows-x64.msi", md)
+        self.assertNotIn("qualification report", md)              # no reports dir given
+
+    def test_index_and_pages_written(self):
+        cat = self.catalog()
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "reports" / "9.9.9").mkdir(parents=True)
+            (root / "reports" / "9.9.9" / "README.md").write_text("x", encoding="utf-8")
+            written = downloads.write_pages(cat, root / "dist", root / "reports")
+            names = sorted(p.name for p in written)
+            self.assertEqual(names, ["9.10.0.md", "9.9.9.md", "README.md", "packages.json"])
+            idx = (root / "dist" / "README.md").read_text(encoding="utf-8")
+            self.assertIn("Latest: **[9.10.0](9.10.0.md)**", idx)   # 9.10.0 sorts above 9.9.9
+            self.assertIn("| [9.9.9](9.9.9.md) | 2026-11-04 | yes | yes | - | yes | yes | yes | yes | yes | [qualification report](../reports/9.9.9/README.md) |", idx)
+            self.assertIn("| [9.10.0](9.10.0.md) |  | - | - | - | - | - | - | - | - |  |", idx)
+            page = (root / "dist" / "9.9.9.md").read_text(encoding="utf-8")
+            self.assertIn("[qualification report](../reports/9.9.9/README.md)", page)
+            self.assertEqual(downloads.load_cache(root / "dist")["versions"][0]["version"], "9.9.9")
+
+    def test_merge_hashes_reads_local_files_and_keeps_old_sums(self):
+        cat = self.catalog()
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            f = cat["versions"][0]["files"][1]          # the ubuntu signature zip, size 1500
+            p = root / "9.9.9" / "linux-x86_64-deb" / f["file"]
+            p.parent.mkdir(parents=True)
+            p.write_bytes(b"z" * 1500)
+            n = downloads.merge_hashes(cat, root, previous={"versions": [{"files": [{"file": cat["versions"][0]["files"][4]["file"], "sha256": "cd" * 32}]}]})
+        self.assertEqual(n, 3)
+        self.assertEqual(f["sha256"], __import__("hashlib").sha256(b"z" * 1500).hexdigest())
+        self.assertEqual(cat["versions"][0]["files"][4]["sha256"], "cd" * 32)
+        self.assertEqual(cat["versions"][0]["files"][0]["sha256"], "ab" * 32)
+
+    def test_dist_pages_are_committed_but_packages_are_not(self):
+        gi = (ROOT / ".gitignore").read_text(encoding="utf-8")
+        self.assertIn("!/dist/*.md", gi)
+        self.assertIn("!/dist/packages.json", gi)
+        self.assertIn("/dist/*\n", gi)
 
 
 class Hygiene(unittest.TestCase):

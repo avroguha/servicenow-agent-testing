@@ -9,6 +9,10 @@
 # Downloaded agent packages and test output (large / environment specific)
 /dist/*
 !/dist/.gitkeep
+# the download pages (links to ServiceNow's server, no binaries) are committed
+!/dist/README.md
+!/dist/*.md
+!/dist/packages.json
 /results/*
 !/results/.gitkeep
 /lab/state.json

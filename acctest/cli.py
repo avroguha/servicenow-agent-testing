@@ -5,6 +5,7 @@
                             ACC_API_KEY_AUTO_CREATE allow them
   versions                  which agent version the instance offers and the OS packages that exist for it
   download [--version V]    fetch the packages + install script into dist/<version>/
+  downloads                 write dist/README.md + dist/<version>.md: every published version, every OS package link
   lab provision|destroy|status   home lab only (LAB_MODE=proxmox)
   mid setup                 create/start the ACC listener on MID_SERVER_NAME (needs MID_AUTO_CONFIGURE=true)
   mid sync                  push the current ACC plugin assets to the MID servers (fixes 'hash does not match' ACC-1500)
@@ -28,7 +29,7 @@ from .report import write_report
 from .results import RunResult, TestResult
 from .runner import Runner, write_index
 from .snow import SNClient, SNError
-from .util import setup_logging
+from .util import setup_logging, version_key
 
 
 def _sn(s: Settings) -> SNClient:
@@ -117,6 +118,31 @@ def cmd_download(s: Settings, a) -> int:
     for f in m["files"]:
         print(f"  {'ok ' if f.get('downloaded') else ('--' if f.get('available') else 'n/a')} {f.get('os_key', ''):22} {f['file']}  {(f.get('sha256') or '')[:16]}")
     print("manifest:", s.agent_download_dir / cat.version / "manifest.json")
+    return 0
+
+
+def cmd_downloads(s: Settings, a) -> int:
+    """Markdown download pages for every published agent version (or the ones given), per OS and architecture."""
+    from . import downloads
+    prev = downloads.load_cache(s.agent_download_dir)
+    if a.no_probe:
+        if not prev:
+            print("no", s.agent_download_dir / "packages.json", "yet - run without --no-probe first", file=sys.stderr)
+            return 2
+        cat = prev
+    else:
+        versions = a.version or None
+        print(f"probing the download server for {'every published version' if not versions else ', '.join(versions)} (HEAD per file)...")
+        cat = downloads.probe(versions=versions)
+        if versions and prev:
+            # keep the versions not re-probed this time
+            keep = [e for e in prev["versions"] if e["version"] not in versions]
+            cat["versions"] = sorted(keep + cat["versions"], key=lambda e: version_key(e["version"]))
+    n = downloads.merge_hashes(cat, s.agent_download_dir, prev)
+    written = downloads.write_pages(cat, s.agent_download_dir, PROJECT_ROOT / "reports")
+    print(f"{len(cat['versions'])} versions, {n} SHA-256 sums from local packages; wrote:")
+    for w in written:
+        print("  ", w.relative_to(PROJECT_ROOT) if w.is_relative_to(PROJECT_ROOT) else w)
     return 0
 
 
@@ -247,6 +273,9 @@ def main(argv: list[str] | None = None) -> int:
     rt = sub.add_parser("runtimes", help="embedded Ruby / OpenSSL / gems per agent version (from dist/, downloading the deb when missing)")
     rt.add_argument("--version", action="append", help="repeatable; default: every version in dist/")
     d = sub.add_parser("download"); d.add_argument("--version"); d.add_argument("--os", help="comma separated os keys"); d.add_argument("--force", action="store_true")
+    dl = sub.add_parser("downloads", help="write dist/README.md and dist/<version>.md - every published version with every OS package link")
+    dl.add_argument("--version", action="append", help="repeatable; default: every version on the download server")
+    dl.add_argument("--no-probe", action="store_true", help="re-render from dist/packages.json without asking the server")
     lb = sub.add_parser("lab"); lb.add_argument("action", choices=["provision", "destroy", "status"]); lb.add_argument("--force", action="store_true")
     m = sub.add_parser("mid"); m.add_argument("action", choices=["setup", "status", "sync"])
     sub.add_parser("apikey")
@@ -269,7 +298,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         return {"env": cmd_env, "preflight": cmd_preflight, "versions": cmd_versions, "download": cmd_download, "lab": cmd_lab,
                 "mid": cmd_mid, "apikey": cmd_apikey, "fixtures": cmd_fixtures, "run": cmd_run, "report": cmd_report, "uninstall": cmd_uninstall,
-                "runtimes": cmd_runtimes}[a.cmd](s, a)
+                "runtimes": cmd_runtimes, "downloads": cmd_downloads}[a.cmd](s, a)
     except SNError as e:
         print("ServiceNow error:", e, file=sys.stderr)
         return 1
