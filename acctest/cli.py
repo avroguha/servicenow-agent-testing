@@ -150,7 +150,20 @@ def cmd_downloads(s: Settings, a) -> int:
     changelog = downloads.load_changelog(s.agent_download_dir)
     for problem in downloads.changelog_problems(cat.get("store"), changelog):
         print("CHANGE LOG:", problem)
-    written = downloads.write_pages(cat, s.agent_download_dir, PROJECT_ROOT / "reports", changelog)
+    from . import accconfig
+    configs = accconfig.load(s.agent_download_dir)
+    if a.configs:
+        versions = [e["version"] for e in cat["versions"]]
+        missing = [v for v in versions if v not in (configs or {}).get("versions", {})]
+        print(f"reading acc.yml / allow-list / unit from {len(missing) if not a.force_configs else len(versions)} package(s)"
+              " (those not in dist/ are downloaded to a temporary file and deleted)...")
+        configs = accconfig.collect(versions, s.agent_download_dir, cat.get("base_url", downloads.BASE_URL), configs, force=a.force_configs)
+        accconfig.save(configs, s.agent_download_dir)
+    elif configs:
+        unread = [e["version"] for e in cat["versions"] if e["version"] not in configs.get("versions", {})]
+        if unread:
+            print("ACC.YML: not read yet for", ", ".join(unread), "- run with --configs")
+    written = downloads.write_pages(cat, s.agent_download_dir, PROJECT_ROOT / "reports", changelog, configs)
     print(f"{len(cat['versions'])} versions, {n} SHA-256 sums from local packages; wrote:")
     for w in written:
         print("  ", w.relative_to(PROJECT_ROOT) if w.is_relative_to(PROJECT_ROOT) else w)
@@ -287,6 +300,8 @@ def main(argv: list[str] | None = None) -> int:
     dl = sub.add_parser("downloads", help="write dist/README.md and dist/<version>.md - every published version with every OS package link")
     dl.add_argument("--version", action="append", help="repeatable; default: every version on the download server")
     dl.add_argument("--no-probe", action="store_true", help="re-render from dist/packages.json without asking the server")
+    dl.add_argument("--configs", action="store_true", help="read acc.yml, allow-list and service unit of every version not in dist/configs.json yet (downloads each package once)")
+    dl.add_argument("--force-configs", action="store_true", help="with --configs: read every version again")
     lb = sub.add_parser("lab"); lb.add_argument("action", choices=["provision", "destroy", "status"]); lb.add_argument("--force", action="store_true")
     m = sub.add_parser("mid"); m.add_argument("action", choices=["setup", "status", "sync"])
     sub.add_parser("apikey")

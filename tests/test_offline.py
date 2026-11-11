@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from acctest import agents, checks, downloads, resources  # noqa: E402
+from acctest import accconfig, agents, checks, downloads, resources  # noqa: E402
 from acctest.config import Settings, TargetSpec, load_targets, parse_env_file  # noqa: E402
 from acctest.report import render  # noqa: E402
 from acctest.results import FAIL, PASS, SKIP, WARN, RunResult, TestResult  # noqa: E402
@@ -520,8 +520,8 @@ class Downloads(unittest.TestCase):
             self.assertEqual(names, ["9.10.0.md", "9.9.9.md", "README.md", "packages.json"])
             idx = (root / "dist" / "README.md").read_text(encoding="utf-8")
             self.assertIn("Latest: **[9.10.0](9.10.0.md)**", idx)   # 9.10.0 sorts above 9.9.9
-            self.assertIn("| [9.9.9](9.9.9.md) | 2026-11-04 | yes | yes | - | yes | yes | yes | yes | yes | - | [qualification report](../reports/9.9.9/README.md) |", idx)
-            self.assertIn("| [9.10.0](9.10.0.md) |  | - | - | - | - | - | - | - | - | - |  |", idx)
+            self.assertIn("| [9.9.9](9.9.9.md) | 2026-11-04 | yes | yes | - | yes | yes | yes | yes | yes | - | - | [qualification report](../reports/9.9.9/README.md) |", idx)
+            self.assertIn("| [9.10.0](9.10.0.md) |  | - | - | - | - | - | - | - | - | - | - |  |", idx)
             page = (root / "dist" / "9.9.9.md").read_text(encoding="utf-8")
             self.assertIn("[qualification report](../reports/9.9.9/README.md)", page)
             self.assertEqual(downloads.load_cache(root / "dist")["versions"][0]["version"], "9.9.9")
@@ -601,7 +601,116 @@ class Downloads(unittest.TestCase):
         self.assertIn("!/dist/*.md", gi)
         self.assertIn("!/dist/packages.json", gi)
         self.assertIn("!/dist/changelog.json", gi)
+        self.assertIn("!/dist/configs.json", gi)
         self.assertIn("/dist/*\n", gi)
+
+
+class AccConfig(unittest.TestCase):
+    """acc.yml defaults per version: the parser, the comparison and the page section, all offline."""
+
+    OLD = """---
+# Agent Client Collector configuration
+# Specify the agent name. Default is the result of the 'hostname' command
+#name: "hostname"
+# The backend-url has the following format ws://<MID>:<PORT>/ws/events
+backend-url:
+ - "wss://127.0.0.1:8800/ws/events"
+#user: "admin"
+api-key: ""
+# Linux   location   : /var/log/servicenow/agent-client-collector/acc.log
+#log-level: "info" # Allowed values: panic, fatal
+log-level: "info"
+skip-tls-verify: true
+#redact:
+#  - username
+# -  password
+agent_cpu_threshold:
+ cpu_percentage_limit: 5 # CPU percentage limit. Default = 5.
+ proxy_cpu_percentage_limit: 15 # Default = 15
+disable-api: true
+enable-auto-mid-selection: true # Enables or disables the feature.
+"""
+    NEW = """---
+backend-url:
+ - "wss://127.0.0.1:8800/ws/events"
+connect-without-mid: false
+instance-url: ""
+api-key: ""
+log-level: "info"
+insecure-skip-tls-verify: true
+#redact:
+#  - username
+# -  password
+# -  secret
+agent_cpu_threshold:
+  cpu_percentage_limit: 5 # CPU percentage limit. Default = 5.
+  proxy_cpu_percentage_limit: 80 # Default = 80
+enable-auto-mid-selection: false
+#pac-file: "https://example.com/proxy.pac"
+"""
+
+    def rec(self, text, cmds=("a.rb",), unit=None):
+        return {"acc_yml": accconfig.parse_acc_yml(text),
+                "allow_list": {"count": len(cmds), "commands": list(cmds), "any_arguments": list(cmds)},
+                "allow_list_sha256": str(hash(cmds)), "unit": unit or {"Service.User": "servicenow"}}
+
+    def test_parse_active_documented_nested_and_lists(self):
+        p = accconfig.parse_acc_yml(self.OLD)
+        self.assertEqual(p["active"]["backend-url"], ["wss://127.0.0.1:8800/ws/events"])
+        self.assertEqual(p["active"]["api-key"], "")
+        self.assertEqual(p["active"]["log-level"], "info")
+        self.assertNotIn("log-level", p["documented"])                  # active wins over its commented example
+        self.assertEqual(p["active"]["agent_cpu_threshold.cpu_percentage_limit"], "5")   # inline comment stripped
+        self.assertNotIn("agent_cpu_threshold", p["active"])            # a grouping key carries no value
+        self.assertEqual(p["documented"]["name"], "hostname")
+        self.assertEqual(p["documented"]["redact"], ["username", "password"])
+        joined = " ".join(list(p["active"]) + list(p["documented"]))
+        for prose in ("Linux", "location", "format", "Default"):
+            self.assertNotIn(prose, joined)
+
+    def test_diff_reports_renames_defaults_and_allow_list(self):
+        ch = accconfig.diff(self.rec(self.OLD, ("a.rb", "b.rb"), {"Service.User": "servicenow", "Service.KillMode": "process"}),
+                            self.rec(self.NEW, ("a.rb", "c.rb"), {"Service.User": "servicenow", "Service.KillMode": "control-group"}))
+        text = "\n".join(ch)
+        self.assertIn("acc.yml: key `skip-tls-verify` removed (was set to `true`)", text)
+        self.assertIn("acc.yml: new key `insecure-skip-tls-verify` set to `true`", text)
+        self.assertIn("acc.yml: `agent_cpu_threshold.proxy_cpu_percentage_limit` default `15` -> `80`", text)
+        self.assertIn("acc.yml: `enable-auto-mid-selection` default `true` -> `false`", text)
+        self.assertIn("acc.yml: key `disable-api` removed", text)
+        self.assertIn("acc.yml: new key `pac-file` documented (commented out", text)
+        self.assertIn("acc.yml: documented example of `redact` `username`, `password` -> `username`, `password`, `secret`", text)
+        self.assertIn("allow-list: 1 command(s) added: `c.rb`", text)
+        self.assertIn("allow-list: 1 command(s) removed: `b.rb`", text)
+        self.assertNotIn("no longer accepts any arguments for `b.rb`", text)   # removed, not restricted
+        self.assertIn("systemd unit: `Service.KillMode` `process` -> `control-group`", text)
+        self.assertEqual(accconfig.diff(self.rec(self.NEW), self.rec(self.NEW)), [])
+
+    def test_section_and_history_render(self):
+        cfg = {"versions": {"1.0.0": self.rec(self.OLD), "1.1.0": self.rec(self.NEW), "1.2.0": self.rec(self.NEW)}}
+        sec = "\n".join(accconfig.render_section("1.1.0", cfg, []))
+        self.assertIn("## Configuration (acc.yml)", sec)
+        self.assertIn("| `connect-without-mid` | `false` | set |", sec)
+        self.assertIn("| `redact` | 3 entries | documented, commented out |", sec)
+        self.assertIn("Compared with [1.0.0](1.0.0.md):", sec)
+        same = "\n".join(accconfig.render_section("1.2.0", cfg, []))
+        self.assertIn("None - the shipped configuration, allow-list and unit are the same as in [1.1.0](1.1.0.md).", same)
+        self.assertIn("oldest version read", "\n".join(accconfig.render_section("1.0.0", cfg, [])))
+        self.assertIn("not collected yet", "\n".join(accconfig.render_section("9.9.9", cfg, [])))
+        hist = "\n".join(accconfig.render_history(cfg))
+        self.assertIn("**[1.1.0](1.1.0.md)** (from 1.0.0)", hist)
+        self.assertNotIn("[1.2.0]", hist)
+
+    def test_parse_allow_list_and_unit(self):
+        al = accconfig.parse_allow_list('[{"exec":"x.rb","args":[""],"skip_arguments":true},{"exec":"y","args":["-a"]}]')
+        self.assertEqual(al, {"count": 2, "commands": ["x.rb", "y"], "any_arguments": ["x.rb"], "regex": [], "args": {"y": ["-a"]}})
+        al2 = accconfig.parse_allow_list('[{"exec":"x.rb","args":[""],"skip_arguments":true},{"exec":"y","args":["-a","-b"],"use_regex":true}]')
+        ch = accconfig.diff({"acc_yml": {"active": {}, "documented": {}}, "allow_list": al, "allow_list_sha256": "1"},
+                            {"acc_yml": {"active": {}, "documented": {}}, "allow_list": al2, "allow_list_sha256": "2"})
+        self.assertEqual(ch, ["allow-list: `y` - 1 allowed argument pattern(s) added: `-b`",
+                              "allow-list: `y` arguments are now matched as regular expressions"])
+        self.assertIn("error", accconfig.parse_allow_list("not json"))
+        u = accconfig.parse_unit("[Service]\nEnvironment=A=1\nEnvironment=B=2\nUser=servicenow\n# c\n")
+        self.assertEqual(u, {"Service.Environment": "A=1 | B=2", "Service.User": "servicenow"})
 
 
 class Hygiene(unittest.TestCase):

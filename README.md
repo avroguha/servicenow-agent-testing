@@ -48,7 +48,7 @@ Ubuntu / Debian x86_64 `.deb`, Ubuntu ARM64 `.deb`, RHEL-family and SUSE `.rpm`,
 Apple silicon `.pkg`, each with its direct link, size, date on the server, signature file and the SHA-256 of the
 packages this harness downloaded. Each page also has a **change log** (summarised from ServiceNow's release notes on the
 Store, kept in `dist/changelog.json`, with the full text linked) and the index says which **server and desktop** systems
-ServiceNow supports - the same packages serve both. The packages themselves stay on `install.service-now.com`; nothing
+ServiceNow supports - the same packages serve both. Each page also shows the **default `acc.yml`**, the default command allow-list and the service unit that version ships, and what changed from the version before; the index lists every configuration change from 2.5.0 to today with notes on what matters when upgrading (read from each version's package with `python acctest.py downloads --configs`, cached in `dist/configs.json`). The packages themselves stay on `install.service-now.com`; nothing
 is mirrored here.
 `python acctest.py downloads` rebuilds the pages by asking the server what exists (HEAD per file - the server has no
 index) and reads the Store listing; `--no-probe` re-renders from `dist/packages.json`. When the Store has a version with

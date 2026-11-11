@@ -1,0 +1,39 @@
+{
+ "_about": "Hand-written analysis of the shipped acc.yml / allow-list / service unit history in dist/configs.json. 'highlights' open the 'acc.yml changes across versions' section of dist/README.md; 'versions' adds a note to that version's page and history entry. Facts only from the packages; anything not tested here says so.",
+ "highlights": [
+  "**An upgrade keeps your acc.yml and your allow-list.** The deb ships `acc.yml.example` and `check-allow-list.json.default`; the install script copies them to `acc.yml` and `check-allow-list.json` only when no `acc.yml` exists yet, and otherwise prints \"Keeping old ... configuration file\" (read from the 7.1.3 install script). A default changed below therefore reaches a host only through a fresh install or your own edit - compare your files with the table of the version you install.",
+  "**TLS to the MID is not verified by default, in every version.** The template has always set the skip-verification flag to true. To verify the MID's certificate set `insecure-skip-tls-verify: false` and point `trusted-ca-file` at the CA that signed it.",
+  "**3.1.0 renamed `skip-tls-verify` to `insecure-skip-tls-verify`.** A file written by 3.0.x or older that sets `skip-tls-verify: false` should be changed to the new name; whether newer agents still read the old name was not tested here.",
+  "**3.3.1 turned Auto MID Selection off by default** (`enable-auto-mid-selection: false`); the agent then uses `backend-url` in the order given. Older files keep `true`.",
+  "**3.5.2 cut the default allow-list from 77 commands to 10** (the discovery modules plus `acc`, `osqueryi`, `read-file.rb` and the restart and upgrade helpers). The old monitoring scripts (check-*, metrics-*) are allowed through the allow-lists that come with each ACC plugin instead; `allow-list-global-only`, documented since the same version, turns those off. A host installed before 3.5.2 and upgraded since still has the long list.",
+  "**5.0.0 put the MID-less keys in the template** (`connect-without-mid: false`, `instance-url`, `registration-key`); they were only documented since 3.1.0.",
+  "**The template has not changed since 6.0.0** (`pac-file` documented). Between 6.0.0 and 7.1.3 only the allow-list (6.4.0, 7.1.1) and the service unit (6.1.0 to 6.4.0) changed.",
+  "**rpm installs differ.** The rpm ships neither template (the install script says so), so on RHEL-family and SUSE hosts `acc.yml` is written by the agent's own `acc gateway mid` command and has no `allow-list:` line - every command is allowed unless you add one. This matches what the qualification runs found on Rocky and openSUSE."
+ ],
+ "versions": {
+  "3.1.0": [
+   "The TLS flag was renamed in this version: an existing acc.yml that sets `skip-tls-verify` should use `insecure-skip-tls-verify` from now on."
+  ],
+  "3.3.1": [
+   "Auto MID Selection is off by default from this version; hosts installed earlier keep it on unless their acc.yml is edited."
+  ],
+  "3.5.2": [
+   "The default allow-list now covers only the discovery modules; monitoring checks are allowed by the plugins' own allow-lists. The install script copies the default only on a fresh install, so a host upgraded from an older version keeps its old, longer check-allow-list.json."
+  ],
+  "6.1.0": [
+   "The unit now stops the whole process tree (KillMode=control-group); 6.3.0 reverted this and 6.4.0 restored it for good. The 6.5.1 release notes report that stopping the service on Linux now ends child processes."
+  ],
+  "6.3.0": [
+   "The 6.1.0 unit change was reverted in this version and restored in 6.4.0."
+  ],
+  "6.4.0": [
+   "From here on the unit stops the agent's whole process tree, waiting 30 s before SIGKILL."
+  ],
+  "7.0.4": [
+   "The 7.0.4 release notes mention tighter default allow-list rules, but the default allow-list file in the package is identical to 7.0.3 - the restriction is not in this file."
+  ],
+  "7.1.1": [
+   "`read-file.rb` may now also read the AI proxy log, for the AI proxy introduced in this version. The template itself is unchanged: the install script appends `ai-proxy-enabled: true` to acc.yml when the AI proxy is enabled at install (7.1.3 script)."
+  ]
+ }
+}

@@ -28,6 +28,7 @@ from pathlib import Path
 
 import requests
 
+from . import accconfig
 from .agents import published_versions
 from .util import iso_now, safe_name, sha256_file, version_key
 
@@ -293,7 +294,7 @@ def render_changelog(v: str, store: dict | None, changelog: dict, all_versions: 
 
 
 def render_version(entry: dict, base_url: str, reports_dir: Path | None = None, store: dict | None = None,
-                   changelog: dict | None = None, all_versions: list[str] | None = None) -> str:
+                   changelog: dict | None = None, all_versions: list[str] | None = None, configs: dict | None = None) -> str:
     v = entry["version"]
     files = {(f["classifier"], f["kind"]): f for f in entry["files"]}
     out = [f"# Agent Client Collector {v} - downloads", "",
@@ -326,6 +327,7 @@ def render_version(entry: dict, base_url: str, reports_dir: Path | None = None, 
             "one macOS pkg per architecture. Which operating system releases ServiceNow supports is listed in "
             "[Server or desktop](README.md#server-or-desktop) on the index page.", ""]
     out += render_changelog(v, store, changelog or {}, all_versions or [])
+    out += accconfig.render_section(v, configs, all_versions or [], (configs or {}).get("_notes"))
     out += ["## Installing", "",
             "The instance's own install script (served at `/api/sn_agent/agents/install_agent`, Linux and macOS) downloads the right "
             "package for the host, verifies its signature, installs it and writes `acc.yml` with the MID endpoint and API key:", "",
@@ -340,7 +342,7 @@ def render_version(entry: dict, base_url: str, reports_dir: Path | None = None, 
     return "\n".join(out)
 
 
-def render_index(cat: dict, reports_dir: Path | None = None, changelog: dict | None = None) -> str:
+def render_index(cat: dict, reports_dir: Path | None = None, changelog: dict | None = None, configs: dict | None = None) -> str:
     versions = sorted(cat["versions"], key=lambda e: version_key(e["version"]), reverse=True)
     out = ["# Agent Client Collector - all published versions", "",
            "Every agent version on ServiceNow's download server and the packages that exist for it, found by asking the "
@@ -368,10 +370,15 @@ def render_index(cat: dict, reports_dir: Path | None = None, changelog: dict | N
             "- The Monitoring (ACC-M) and Log Analytics (ACC-L) apps that run on the agent are supported on server operating systems only.",
             "- The listing says the Framework does not support Virtual Desktop Infrastructure, while the 7.0.4 release notes announce "
             "official support for non-persistent VDI. Check with ServiceNow before relying on either.", ""]
+    if configs:
+        out += accconfig.render_history(configs, configs.get("_notes"), configs.get("_highlights"))
     latest = versions[0]["version"] if versions else ""
     out += ["", "## Versions", "", f"Latest: **[{latest}]({latest}.md)**." if latest else "", "",
-            "| Version | On the server | " + " | ".join(SHORT[p["classifier"]] for p in PACKAGES) + " | Change log | Report |",
-            "|---|---|" + "|".join(":-:" for _ in PACKAGES) + "|---|---|"]
+            "| Version | On the server | " + " | ".join(SHORT[p["classifier"]] for p in PACKAGES) + " | Change log | acc.yml | Report |",
+            "|---|---|" + "|".join(":-:" for _ in PACKAGES) + "|---|---|---|"]
+    cv = (configs or {}).get("versions", {})
+    cordered = sorted([x for x in cv if "acc_yml" in cv[x]], key=version_key)
+    cchanged = {cur for prev, cur in zip(cordered, cordered[1:]) if accconfig.diff(cv[prev], cv[cur])}
     svs = {s["version"]: s for s in store.get("versions", [])}
     for e in versions:
         avail = {f["classifier"] for f in e["files"] if f["kind"] == "package" and f.get("available")}
@@ -380,10 +387,13 @@ def render_index(cat: dict, reports_dir: Path | None = None, changelog: dict | N
         sv = svs.get(e["version"])
         has = sv or (changelog or {}).get(e["version"])
         cl = f"[{(sv or {}).get('release_type') or 'yes'}]({e['version']}.md#change-log)" if has else "-"
-        out.append(f"| [{e['version']}]({e['version']}.md) | {day(e.get('last_modified', ''))} | {cells} | {cl} | {rep} |")
+        acc = (f"[changed]({e['version']}.md#changes-from-the-previous-version)" if e["version"] in cchanged
+               else ("same" if e["version"] in cv and "acc_yml" in cv[e["version"]] and e["version"] != (cordered or [""])[0] else "-"))
+        out.append(f"| [{e['version']}]({e['version']}.md) | {day(e.get('last_modified', ''))} | {cells} | {cl} | {acc} | {rep} |")
     out += ["", "\"On the server\" is the earliest file date the server reports for that version - releases older than "
             "2026 carry the date they were last copied there, not their release date. \"Change log\" names the release type "
-            "ServiceNow gave the version on the Store; versions without one have no release notes there.", ""]
+            "ServiceNow gave the version on the Store; versions without one have no release notes there. \"acc.yml\" says "
+            "whether the shipped configuration, default allow-list or service unit differs from the version before.", ""]
     pkg_versions = {e["version"] for e in cat["versions"]}
     store_only = [s["version"] for s in store.get("versions", []) if s["version"] not in pkg_versions]
     if store_only:
@@ -392,7 +402,8 @@ def render_index(cat: dict, reports_dir: Path | None = None, changelog: dict | N
     return "\n".join(out)
 
 
-def write_pages(cat: dict, dist_root: Path, reports_dir: Path | None = None, changelog: dict | None = None) -> list[Path]:
+def write_pages(cat: dict, dist_root: Path, reports_dir: Path | None = None, changelog: dict | None = None,
+                configs: dict | None = None) -> list[Path]:
     """Write dist/packages.json, dist/README.md and dist/<version>.md for every version in the catalog."""
     dist_root.mkdir(parents=True, exist_ok=True)
     written = []
@@ -402,7 +413,13 @@ def write_pages(cat: dict, dist_root: Path, reports_dir: Path | None = None, cha
     idx = dist_root / "README.md"
     if changelog is None:
         changelog = load_changelog(dist_root)
-    idx.write_text(render_index(cat, reports_dir, changelog), encoding="utf-8", newline="\n")
+    if configs is None:
+        configs = accconfig.load(dist_root)
+    if configs is not None:
+        raw = (dist_root / "config-notes.json")
+        data = json.loads(raw.read_text(encoding="utf-8")) if raw.exists() else {}
+        configs = dict(configs, _notes=data.get("versions", {}), _highlights=data.get("highlights", []))
+    idx.write_text(render_index(cat, reports_dir, changelog, configs), encoding="utf-8", newline="\n")
     written.append(idx)
     pkg_versions = {e["version"] for e in cat["versions"]}
     for sv in (cat.get("store") or {}).get("versions", []):
@@ -420,7 +437,7 @@ def write_pages(cat: dict, dist_root: Path, reports_dir: Path | None = None, cha
     for e in cat["versions"]:
         p = dist_root / f"{safe_name(e['version'])}.md"
         p.write_text(render_version(e, cat.get("base_url", BASE_URL), reports_dir, cat.get("store"), changelog,
-                                    [x["version"] for x in cat["versions"]]), encoding="utf-8", newline="\n")
+                                    [x["version"] for x in cat["versions"]], configs), encoding="utf-8", newline="\n")
         written.append(p)
     return written
 

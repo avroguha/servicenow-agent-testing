@@ -14,6 +14,8 @@
 !/dist/*.md
 !/dist/packages.json
 !/dist/changelog.json
+!/dist/configs.json
+!/dist/config-notes.json
 /results/*
 !/results/.gitkeep
 /lab/state.json
