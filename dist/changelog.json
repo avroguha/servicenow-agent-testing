@@ -1,0 +1,205 @@
+{
+ "_about": "Change log per Agent Client Collector Framework release, summarised in our own words from the release notes ServiceNow publishes on the Store listing (store.servicenow.com, app 'Agent Client Collector Framework'). The full text stays on the Store; each page links to it. notes_sha256 is the SHA-256 of the Store's release_notes HTML when the summary was written - `acctest downloads` flags a version whose notes changed since, or a new Store version without a summary here. 'observed' records what this harness measured that differs from the notes.",
+ "versions": {
+  "7.1.3": {
+   "notes_sha256": "17f992b24af2d54123ce7764f4058703eeb2543ba7467292d8e2011eac4a0939",
+   "fixed": [
+    "Windows hosts whose OS fields were not collected were created as generic Computer CIs instead of Windows Server CIs.",
+    "Managed upgrades on Linux aborted during GPG package verification when the agent's service account had no home directory.",
+    "AI Proxy installations all trusted one bundled root CA; each host now generates its own CA, rotated on install and upgrade."
+   ],
+   "security": [
+    "rubyzip gem in the acc-f-commons plugin updated for a vulnerability.",
+    "Ruby 3.3.13, OpenSSL 3.5.9, Go 1.25.10, resolv 0.3.2, golang.org/x/crypto 0.57.0, golang.org/x/net 0.60.0."
+   ],
+   "observed": [
+    "Ruby 3.3.13 and OpenSSL 3.5.9 confirmed in the shipped packages. The notes say Go 1.25.10, but the acc binary of 7.1.3 reports go1.26.10 (Linux and Windows) - see reports/7.1.3."
+   ]
+  },
+  "7.1.1": {
+   "notes_sha256": "77a3aed4dcd90dc99269c6f2d9258fd8d19d6b5562ea2ac2d17a06ff16a698b5",
+   "new": [
+    "AI proxy built into the agent: intercepts and discovers AI traffic on the host for usage visibility and governance.",
+    "Agent commands to set the AI proxy up, remove it and verify its configuration (OS trust store, system proxy).",
+    "The Windows, Linux and macOS install workflows set up and clean up the AI proxy and keep its enabled state across upgrades.",
+    "AI interaction events, discovery sessions, CA certificate details and proxy status are sent in OpenTelemetry OTLP/JSON format."
+   ],
+   "fixed": [
+    "OpenSSL vulnerabilities in 3.4.6, by moving to 3.4.7.",
+    "Related Links on the agent record of non-persistent VDI agents.",
+    "Policy calculation dropped CIs when the calculation window differed from the removal window."
+   ]
+  },
+  "7.0.4": {
+   "notes_sha256": "50ee1a59ad9280710f4c1503d0bf9a4522df229592282c2d3f15ae243b25a0f9",
+   "new": [
+    "Maintenance token for Windows uninstalls: removing an agent needs a token generated for that agent (works offline, audited).",
+    "Official support for non-persistent VDI: agents in a gold image are operational in under 2 minutes, with no duplicate registration when desktops are re-created, no per-desktop TLS certificate, and checks running as soon as the agent connects."
+   ],
+   "changed": [
+    "Upgrade uses a randomised temporary directory (symlink attacks) and the default command allow-list is stricter (privilege escalation).",
+    "Policy refresh processes agents in batches to avoid memory exhaustion on large MIDs.",
+    "Asset metadata is re-published to every active MID after a Framework upgrade.",
+    "Windows picks the host IP from the default-gateway interface first.",
+    "Disabled checks are logged as skipped; a scheduled job cleans up stale checks and resolves their errors.",
+    "Policies support custom CI tables (u_cmdb_ci_*) and are republished in place instead of deleted and recreated.",
+    "Corrupted agent_now_id files are detected and repaired; allow-lists accept JSON5; the WMI permission test works on Windows 11 without wmic.exe."
+   ],
+   "fixed": [
+    "Out-of-memory on policy push with more than 80,000 agents on one MID.",
+    "installed_software hang on RHEL 10 when rpm output exceeded the 64 KB pipe buffer.",
+    "CPU discovery on ARM64 Linux when osquery returns no CPU data.",
+    "Disabled checks reported as running successfully, hiding collection outages.",
+    "Test Check UI hang with more than 28,000 agents; agent crash on YAML parse errors at start.",
+    "Wrong IP on multi-homed Windows hosts; misleading log-fetch error after a successful upgrade.",
+    "MID-less (ICS) agents stuck in Unknown; the duplicate-agent-ID cleanup job running indefinitely; config sync for checks without assets; smaller policy UI and history fixes."
+   ]
+  },
+  "6.6.4": {
+   "notes_sha256": "be62774f33eae690a2635d146f4b47e326c5db0dc4dab8846423e9c1322446ae",
+   "fixed": [
+    "MID-less (ICS) agents could hang in the connection manager while reconnecting and stay disconnected for good."
+   ]
+  },
+  "6.6.3": {
+   "notes_sha256": "b7bdd17bfccd96702aa4a1f90f65993234f2ad1078ed14ca1c38386369af5bb9",
+   "fixed": [
+    "RPM upgrades on Linux now remove the .pem and .bin files left in the upgrade directory.",
+    "Host data collection failed on Windows Server 2012 R2 because of an asset clean-up error.",
+    "Windows installs of versions after 6.5.1 failed while creating the servicenow user."
+   ],
+   "security": [
+    "OpenSSL 3.4.6 and net-imap 0.5.15."
+   ],
+   "observed": [
+    "No agent package is numbered 6.6.3. Agent 6.6.2 already embeds OpenSSL 3.4.6 and net-imap 0.5.15, so this Framework release most likely delivered agent build 6.6.2 (read from the packages with `acctest runtimes`)."
+   ]
+  },
+  "6.6.1": {
+   "notes_sha256": "74074d15ae07d0de00e227e18abfbbb9363831e958977abea2991360f1f71dd7",
+   "new": [
+    "Ubuntu on 64-bit ARM.",
+    "RHEL 10, Rocky Linux 10 and Oracle Linux 10."
+   ],
+   "fixed": [
+    "When a plugin asset fails validation, the agent fetches the public certificates it needs from the instance (ICS)."
+   ]
+  },
+  "6.5.1": {
+   "notes_sha256": "373c6c41eb318dde7041521c508c01d9bf622f16d5638d8e3cd73b86a22b73fc",
+   "new": [
+    "More precise error reporting: finer logging for ACC-1500, ACC-2000 and ACC-2500, specific ACC-4xxx codes with remediation for the Error Triage Dashboard, suggestions on upgrade errors, and a file-permission check after registration.",
+    "Signed assets are verified against certificate validity at their timestamp.",
+    "The MSI installer's scripts moved from VBScript to C# (VBScript kept as a fallback); installing now needs .NET Framework 4.6.2.",
+    "Golden image preparation for VM templates; PAC_FILE in the single-line installer for macOS and Linux.",
+    "Agents register to worker nodes rather than UI nodes; fewer running-process records; lighter keepalive database load; more Instance Scan checks."
+   ],
+   "changed": [
+    "Updated sudoers requirements for rpm and deb upgrades; the relocation flag works in selective upgrades."
+   ],
+   "security": [
+    "OpenSSL 3.4.5, RDoc 6.6.3.1, Addressable 2.9.0, net-imap 0.4.24, zlib 3.1.2."
+   ],
+   "fixed": [
+    "Timeouts querying the agent's local database APIs.",
+    "Race in configuration publish when an agent moves to another MID before host data collection ends.",
+    "macOS upgrades now keep the database and cache folders.",
+    "Stopping the service on Linux now ends child processes; Windows applies process priority to every child.",
+    "Checks missed while the agent was down now run; stale checks no longer show as active errors.",
+    "Importing policies no longer deletes assets from the MID; policy calculation is time-boxed.",
+    "Windows installer falsely detecting a servicenow user; re-registration after ICS-based upgrades."
+   ]
+  },
+  "6.0.4": {
+   "notes_sha256": "6e3da9e7b5baf2ac83e3abd30d8a79eeff99e2da7b6c7089cbbdb6011d7cb0b5",
+   "fixed": [
+    "Single-line install on Ubuntu; the Windows MSI no longer depends on %COMSPEC%.",
+    "The deterministic agent ID uses the MAC addresses of every interface, active or not.",
+    "A memory leak from a timer that never stopped; WebSocket errors all use one back-off, ending continuous reconnects.",
+    "Self-test kept in the allow-list of upgraded agents; upgrades work on non-English laptops whose encoding is not UTF-8.",
+    "Data collection with an empty running-process list (wrong IRE error); RAM on some Windows hypervisors; primary IP taken from a deactivated interface."
+   ],
+   "changed": [
+    "On Windows, model_id now comes from the Visibility content, not from basic data collection."
+   ]
+  },
+  "5.0.2": {
+   "notes_sha256": "6c356b3896aa93ddb9c71332d8ed06a9a71cacc97f14656c9348adeefe8d1213",
+   "fixed": [
+    "The agent could stop responding when command logging waited forever for a command to return.",
+    "Long checks timed out when a Windows host went to sleep during them.",
+    "Hash mismatch errors after upgrading dependent apps (Visibility content, Monitoring and others).",
+    "osquery returned nothing when a command produced warnings."
+   ]
+  },
+  "5.0.1": {
+   "notes_sha256": "a0445d7daed81f3acf9a29107bd636b51c1c19d3da1629fc61e4c1aa259ffd46",
+   "fixed": [
+    "Agent CPU utilisation calculation.",
+    "The Windows single-line install accepts HTTP_PROXY and a PAC file."
+   ]
+  },
+  "5.0.0": {
+   "notes_sha256": "60fbf9a790b197886efac4a257fc8afaf9fafacc8c854a195aca524885f581a0",
+   "new": [
+    "Proxy and PAC file support.",
+    "MID-less registration improvements: errors logged before and after registration, a placeholder agent record on failure, the registration key deleted with the agent.",
+    "Agents can move between instances from the command line; macOS gains selective and automatic upgrade.",
+    "Duplicate agent ID detection and remediation for agents connected through a MID."
+   ],
+   "security": [
+    "OpenSSL 3.4.1 and net-imap 0.4.9.1."
+   ],
+   "fixed": [
+    "Deterministic agent ID generation; CPU usage reported by checks on Windows.",
+    "OS domain read from WMI first; host_name honours glide.discovery.hostname.include_domain.",
+    "Imported parent policies now pass changes to child policies; credentials are no longer copied with policies across domains.",
+    "MID-less registration uses the currently active certificate rather than the newest one."
+   ]
+  },
+  "4.3.1": {
+   "notes_sha256": "e891475481cdee6c0fcf73a5a2d15ffb744950db2c2071706f7d5b25369278cc",
+   "new": [
+    "Proxy support for MID-less agents; mass upgrade of Linux and Windows agents; osquery 5.14.1; error framework improvements."
+   ],
+   "changed": [
+    "Duplicate agent ID errors include the IP address; UI actions processed by MIDs run at interactive priority; deleting a MID-less agent deletes its registration record."
+   ],
+   "fixed": [
+    "Reboot loop from an error at Windows service start-up; command prompts flashing during Windows install.",
+    "Empty folders left in /tmp by osquery runs; -p parameter values shown as REDACTED in check commands.",
+    "Windows install failing when the domain user came from another domain than the installing user."
+   ]
+  },
+  "4.2.1": {
+   "notes_sha256": "a26373a2633d003ad36bcd7610d274626e70bc7bb6faebf74a2507acb7aed7f3",
+   "new": [
+    "Ubuntu 24.04 LTS; Oracle glasv2 pattern on the agent; an Instance Scan check for the error framework."
+   ],
+   "changed": [
+    "An invalid registration key is logged as an agent issue with details."
+   ],
+   "fixed": [
+    "Plugins not syncing on instances that run on Oracle databases.",
+    "Install from the agent installation UI with an existing local user.",
+    "Host data marked collected after an IRE error.",
+    "A new ACL on the registration key table, and further security fixes."
+   ]
+  },
+  "4.1.1": {
+   "notes_sha256": "e5aba13777b84be13fa5a259c7bb2a680264ee4e16589c846ca148aea23be5e1",
+   "new": [
+    "Linux capabilities (CAP_SETFCAP) give the agent access to files it needs without root; agent error framework."
+   ],
+   "security": [
+    "OpenSSL, rexml and Go upgraded."
+   ],
+   "fixed": [
+    "The agent's embedded path now wins over the system path when set first.",
+    "Upgrades deleted the servicenow user's profile directories, breaking asset sync.",
+    "The Windows installer failed to create the servicenow user, so no service was created.",
+    "macOS upgrade without a MID; clean-up of child processes; Windows log rotation."
+   ]
+  }
+ }
+}

@@ -46,9 +46,14 @@ Markdown (`result.md`, `windows-server-2025.md`), and the environment findings e
 2026-11-11, 2.5.0 to 7.1.3) with a page per version - `dist/<version>.md` - listing every package that exists for it:
 Ubuntu / Debian x86_64 `.deb`, Ubuntu ARM64 `.deb`, RHEL-family and SUSE `.rpm`, Windows x64 `.msi`, macOS Intel and
 Apple silicon `.pkg`, each with its direct link, size, date on the server, signature file and the SHA-256 of the
-packages this harness downloaded. The packages themselves stay on `install.service-now.com`; nothing is mirrored here.
+packages this harness downloaded. Each page also has a **change log** (summarised from ServiceNow's release notes on the
+Store, kept in `dist/changelog.json`, with the full text linked) and the index says which **server and desktop** systems
+ServiceNow supports - the same packages serve both. The packages themselves stay on `install.service-now.com`; nothing
+is mirrored here.
 `python acctest.py downloads` rebuilds the pages by asking the server what exists (HEAD per file - the server has no
-index); `--no-probe` re-renders from `dist/packages.json`.
+index) and reads the Store listing; `--no-probe` re-renders from `dist/packages.json`. When the Store has a version with
+no summary yet, or its notes changed since the summary was written, the command says so: add or revise the entry in
+`dist/changelog.json` in your own words and render again.
 
 ## Requirements
 

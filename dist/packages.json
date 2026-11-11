@@ -1,6 +1,6 @@
 {
  "base_url": "https://install.service-now.com/glide/distribution/builds/package/app-signed/",
- "probed_at": "2026-11-11T18:36:31Z",
+ "probed_at": "2026-11-11T19:18:40Z",
  "versions": [
   {
    "version": "2.5.0",
@@ -7637,5 +7637,161 @@
    ],
    "last_modified": "Wed, 04 Nov 2026 06:28:33 GMT"
   }
- ]
+ ],
+ "store": {
+  "listing_url": "https://store.servicenow.com/store/app/bc09636e1be06a50a85b16db234bcbd1",
+  "fetched_at": "2026-11-11T19:19:29Z",
+  "title": "Agent Client Collector Framework",
+  "listed_version": "7.1.3",
+  "supported_systems_md": "**x86_64**\n\n- Linux\n  - Red Hat Enterprise Linux - 7, 8, 9, 10, Rocky Linux - 10, Oracle Linux - OL 7, 8, 9, 10\n  - CentOS 7, CentOS Stream 8 and 9\n  - SLES 12, 15\n  - Ubuntu 18.04, 20.04, 22.04 LTS and 24.04 LTS\n  - Debian 9, 10, 11, 12 and 13\n  - Amazon Linux 2, Amazon Linux 2023\n- Microsoft Windows\n  - Windows Server 2012, 2012r2, 2016, 2019, 2022, 2025\n  - Windows 10 Enterprise Edition\n  - Windows 11 Professional and Enterprise\n- MacOS (x86_64 only)\n  - 10.15 - Catalina\n  - 11 - Big Sur\n  - 12 - Monterey\n  - 13 - Ventura\n  - 14 - Sonoma\n  - 15 - Sequoia\n  - 26 - Tahoe\n  - 27 - Golden Gate\n\n**ARM64**\n\n- MacOS\n  - 12 - Monterey\n  - 13 - Ventura\n  - 14 - Sonoma\n  - 15 - Sequoia\n  - 26 - Tahoe\n- Linux\n  - Ubuntu 22.04 LTS",
+  "versions": [
+   {
+    "version": "7.1.3",
+    "publish_date": "2026-11-05",
+    "release_type": "Patch",
+    "families": [
+     "Brazil",
+     "Australia",
+     "Zurich"
+    ],
+    "notes_sha256": "17f992b24af2d54123ce7764f4058703eeb2543ba7467292d8e2011eac4a0939"
+   },
+   {
+    "version": "7.1.1",
+    "publish_date": "2026-10-08",
+    "release_type": "Minor",
+    "families": [
+     "Brazil",
+     "Australia",
+     "Zurich"
+    ],
+    "notes_sha256": "77a3aed4dcd90dc99269c6f2d9258fd8d19d6b5562ea2ac2d17a06ff16a698b5"
+   },
+   {
+    "version": "7.0.4",
+    "publish_date": "2026-09-10",
+    "release_type": "Major",
+    "families": [
+     "Brazil",
+     "Australia",
+     "Zurich"
+    ],
+    "notes_sha256": "50ee1a59ad9280710f4c1503d0bf9a4522df229592282c2d3f15ae243b25a0f9"
+   },
+   {
+    "version": "6.6.4",
+    "publish_date": "2026-08-07",
+    "release_type": "Patch",
+    "families": [
+     "Brazil",
+     "Australia",
+     "Zurich",
+     "Yokohama"
+    ],
+    "notes_sha256": "be62774f33eae690a2635d146f4b47e326c5db0dc4dab8846423e9c1322446ae"
+   },
+   {
+    "version": "6.6.3",
+    "publish_date": "2026-08-07",
+    "release_type": "Patch",
+    "families": [
+     "Australia",
+     "Zurich",
+     "Yokohama"
+    ],
+    "notes_sha256": "b7bdd17bfccd96702aa4a1f90f65993234f2ad1078ed14ca1c38386369af5bb9"
+   },
+   {
+    "version": "6.6.1",
+    "publish_date": "2026-07-09",
+    "release_type": "Minor",
+    "families": [
+     "Australia",
+     "Zurich",
+     "Yokohama"
+    ],
+    "notes_sha256": "74074d15ae07d0de00e227e18abfbbb9363831e958977abea2991360f1f71dd7"
+   },
+   {
+    "version": "6.5.1",
+    "publish_date": "2026-06-18",
+    "release_type": "Patch",
+    "families": [
+     "Australia",
+     "Zurich",
+     "Yokohama"
+    ],
+    "notes_sha256": "373c6c41eb318dde7041521c508c01d9bf622f16d5638d8e3cd73b86a22b73fc"
+   },
+   {
+    "version": "6.0.4",
+    "publish_date": "2026-01-20",
+    "release_type": "Patch",
+    "families": [
+     "Australia",
+     "Zurich",
+     "Yokohama"
+    ],
+    "notes_sha256": "6e3da9e7b5baf2ac83e3abd30d8a79eeff99e2da7b6c7089cbbdb6011d7cb0b5"
+   },
+   {
+    "version": "5.0.2",
+    "publish_date": "2025-10-01",
+    "release_type": "Patch",
+    "families": [
+     "Zurich",
+     "Yokohama"
+    ],
+    "notes_sha256": "6c356b3896aa93ddb9c71332d8ed06a9a71cacc97f14656c9348adeefe8d1213"
+   },
+   {
+    "version": "5.0.1",
+    "publish_date": "2025-09-10",
+    "release_type": "Patch",
+    "families": [
+     "Zurich",
+     "Yokohama"
+    ],
+    "notes_sha256": "a0445d7daed81f3acf9a29107bd636b51c1c19d3da1629fc61e4c1aa259ffd46"
+   },
+   {
+    "version": "5.0.0",
+    "publish_date": "2025-07-31",
+    "release_type": "Minor",
+    "families": [
+     "Zurich",
+     "Yokohama"
+    ],
+    "notes_sha256": "60fbf9a790b197886efac4a257fc8afaf9fafacc8c854a195aca524885f581a0"
+   },
+   {
+    "version": "4.3.1",
+    "publish_date": "2025-05-01",
+    "release_type": "Minor",
+    "families": [
+     "Zurich",
+     "Yokohama"
+    ],
+    "notes_sha256": "e891475481cdee6c0fcf73a5a2d15ffb744950db2c2071706f7d5b25369278cc"
+   },
+   {
+    "version": "4.2.1",
+    "publish_date": "2025-01-30",
+    "release_type": "Minor",
+    "families": [
+     "Yokohama"
+    ],
+    "notes_sha256": "a26373a2633d003ad36bcd7610d274626e70bc7bb6faebf74a2507acb7aed7f3"
+   },
+   {
+    "version": "4.1.1",
+    "publish_date": "2024-12-05",
+    "release_type": "Patch",
+    "families": [
+     "Yokohama"
+    ],
+    "notes_sha256": "e5aba13777b84be13fa5a259c7bb2a680264ee4e16589c846ca148aea23be5e1"
+   }
+  ]
+ }
 }

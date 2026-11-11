@@ -138,8 +138,19 @@ def cmd_downloads(s: Settings, a) -> int:
             # keep the versions not re-probed this time
             keep = [e for e in prev["versions"] if e["version"] not in versions]
             cat["versions"] = sorted(keep + cat["versions"], key=lambda e: version_key(e["version"]))
+    if not a.no_probe:
+        try:
+            cat["store"] = downloads.fetch_store()
+            print(f"Store listing: {len(cat['store']['versions'])} Framework versions with release notes")
+        except Exception as e:  # noqa: BLE001 - the pages still render without it
+            print("could not read the Store listing (keeping the previous one):", e, file=sys.stderr)
+            if prev and prev.get("store"):
+                cat["store"] = prev["store"]
     n = downloads.merge_hashes(cat, s.agent_download_dir, prev)
-    written = downloads.write_pages(cat, s.agent_download_dir, PROJECT_ROOT / "reports")
+    changelog = downloads.load_changelog(s.agent_download_dir)
+    for problem in downloads.changelog_problems(cat.get("store"), changelog):
+        print("CHANGE LOG:", problem)
+    written = downloads.write_pages(cat, s.agent_download_dir, PROJECT_ROOT / "reports", changelog)
     print(f"{len(cat['versions'])} versions, {n} SHA-256 sums from local packages; wrote:")
     for w in written:
         print("  ", w.relative_to(PROJECT_ROOT) if w.is_relative_to(PROJECT_ROOT) else w)

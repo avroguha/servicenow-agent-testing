@@ -13,6 +13,7 @@
 !/dist/README.md
 !/dist/*.md
 !/dist/packages.json
+!/dist/changelog.json
 /results/*
 !/results/.gitkeep
 /lab/state.json

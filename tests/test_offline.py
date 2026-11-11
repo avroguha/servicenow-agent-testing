@@ -520,8 +520,8 @@ class Downloads(unittest.TestCase):
             self.assertEqual(names, ["9.10.0.md", "9.9.9.md", "README.md", "packages.json"])
             idx = (root / "dist" / "README.md").read_text(encoding="utf-8")
             self.assertIn("Latest: **[9.10.0](9.10.0.md)**", idx)   # 9.10.0 sorts above 9.9.9
-            self.assertIn("| [9.9.9](9.9.9.md) | 2026-11-04 | yes | yes | - | yes | yes | yes | yes | yes | [qualification report](../reports/9.9.9/README.md) |", idx)
-            self.assertIn("| [9.10.0](9.10.0.md) |  | - | - | - | - | - | - | - | - |  |", idx)
+            self.assertIn("| [9.9.9](9.9.9.md) | 2026-11-04 | yes | yes | - | yes | yes | yes | yes | yes | - | [qualification report](../reports/9.9.9/README.md) |", idx)
+            self.assertIn("| [9.10.0](9.10.0.md) |  | - | - | - | - | - | - | - | - | - |  |", idx)
             page = (root / "dist" / "9.9.9.md").read_text(encoding="utf-8")
             self.assertIn("[qualification report](../reports/9.9.9/README.md)", page)
             self.assertEqual(downloads.load_cache(root / "dist")["versions"][0]["version"], "9.9.9")
@@ -540,10 +540,67 @@ class Downloads(unittest.TestCase):
         self.assertEqual(cat["versions"][0]["files"][4]["sha256"], "cd" * 32)
         self.assertEqual(cat["versions"][0]["files"][0]["sha256"], "ab" * 32)
 
+    def test_store_html_to_systems_lists(self):
+        h = ("<p>Marketing prose that must not be copied.</p><p>Supported Operating Systems on x86_64 architecture for this version:</p>"
+             "<ul><li>Linux<ul><li>Ubuntu 22.04 LTS</li><li>Debian 12 &amp; 13</li></ul></li><li>Microsoft Windows<ul>"
+             "<li>Windows 11 Professional</li></ul></li></ul><p>Supported Operating Systems on ARM64 architecture for this version:</p>"
+             "<ul><li>MacOS<ul><li>15 - Sequoia</li></ul></li></ul><p>Note: something else.</p>")
+        md = downloads.systems_only(downloads.html_to_md(h))
+        self.assertEqual(md, "**x86_64**\n\n- Linux\n  - Ubuntu 22.04 LTS\n  - Debian 12 & 13\n- Microsoft Windows\n"
+                             "  - Windows 11 Professional\n\n**ARM64**\n\n- MacOS\n  - 15 - Sequoia")
+        self.assertNotIn("Marketing", md)
+
+    def test_changelog_section_and_store_only_pages(self):
+        cat = self.catalog()
+        cat["store"] = {"listing_url": "https://store.example/app", "listed_version": "9.9.9", "fetched_at": "2026-11-11T00:00:00Z",
+                        "supported_systems_md": "**x86_64**\n\n- Linux", "versions": [
+                            {"version": "9.9.9", "publish_date": "2026-11-05", "release_type": "Patch", "families": ["Brazil"], "notes_sha256": "a" * 64},
+                            {"version": "9.9.8", "publish_date": "2026-10-01", "release_type": "Minor", "families": [], "notes_sha256": "b" * 64}]}
+        cl = {"9.9.9": {"notes_sha256": "a" * 64, "fixed": ["A fix."], "observed": ["Seen here."]},
+              "9.9.8": {"notes_sha256": "c" * 64, "new": ["A feature."]}}
+        page = downloads.render_version(cat["versions"][0], downloads.BASE_URL, None, cat["store"], cl, ["9.9.9", "9.10.0"])
+        self.assertIn("Agent Client Collector Framework 9.9.9: Patch release, published on the Store 2026-11-05, for the Brazil platform families.", page)
+        self.assertIn("**Fixed**\n\n- A fix.", page)
+        self.assertIn("**Observed by this harness**\n\n- Seen here.", page)
+        self.assertIn("[Store listing](https://store.example/app)", page)
+        self.assertLess(page.index("## Change log"), page.index("## Installing"))
+        # a version without a Store entry points at its neighbours
+        other = downloads.render_version(cat["versions"][1], downloads.BASE_URL, None, cat["store"], cl, [])
+        self.assertIn("The Store lists no Agent Client Collector Framework release with this number", other)
+        self.assertIn("[9.9.9](9.9.9.md)", other)
+        # stale / missing summaries are reported
+        self.assertEqual(downloads.changelog_problems(cat["store"], cl),
+                         ["9.9.8: the Store's release notes changed since the summary was written - review it"])
+        self.assertEqual(downloads.changelog_problems(cat["store"], {"9.9.9": cl["9.9.9"]}),
+                         ["9.9.8: release notes on the Store have no summary in dist/changelog.json yet"])
+        with tempfile.TemporaryDirectory() as d:
+            written = downloads.write_pages(cat, Path(d), None, cl)
+            self.assertIn("9.9.8.md", [p.name for p in written])          # Store-only release gets its own page
+            only = (Path(d) / "9.9.8.md").read_text(encoding="utf-8")
+            self.assertIn("no agent package numbered 9.9.8", only.replace("\n", " ").replace("holds no agent ", "no agent "))
+            self.assertIn("- A feature.", only)
+            idx = (Path(d) / "README.md").read_text(encoding="utf-8")
+            self.assertIn("## Server or desktop", idx)
+            self.assertIn("**x86_64**", idx)
+            self.assertIn("[Patch](9.9.9.md#change-log)", idx)
+            self.assertIn("[9.9.8](9.9.8.md)", idx)
+
+    def test_committed_changelog_is_complete_and_in_our_own_words(self):
+        data = json.loads((ROOT / "dist" / "changelog.json").read_text(encoding="utf-8"))["versions"]
+        self.assertIn("7.1.3", data)
+        for v, e in data.items():
+            self.assertRegex(e.get("notes_sha256", ""), r"^[0-9a-f]{64}$", v)
+            items = [i for k, _ in downloads.CL_HEADS for i in e.get(k, [])]
+            self.assertTrue(items, v)
+            for i in items:
+                self.assertNotIn("<", i, f"{v}: HTML left in a summary")
+                self.assertLess(len(i), 400, f"{v}: summary item too long to be a summary")
+
     def test_dist_pages_are_committed_but_packages_are_not(self):
         gi = (ROOT / ".gitignore").read_text(encoding="utf-8")
         self.assertIn("!/dist/*.md", gi)
         self.assertIn("!/dist/packages.json", gi)
+        self.assertIn("!/dist/changelog.json", gi)
         self.assertIn("/dist/*\n", gi)
 
 
